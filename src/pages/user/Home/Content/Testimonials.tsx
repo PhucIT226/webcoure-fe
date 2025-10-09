@@ -1,4 +1,3 @@
-// import "../../../../styles/user/home/Testimonials.scss";
 const testimonials = [
   {
     text: (
@@ -6,7 +5,7 @@ const testimonials = [
         Udemy was rated the{" "}
         <b>most popular online course or certification program</b> for learning
         how to code according to{" "}
-        <a href="#" className="highlight">
+        <a href="#" className="text-blue-600 underline hover:text-blue-800">
           StackOverflow’s 2023 Developer survey
         </a>
         .
@@ -56,20 +55,32 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="testimonials">
-      <div className="container">
-        <h2 className="title">
+    <section className="py-16 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-6 text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-800">
           Join others transforming their lives through learning
         </h2>
-        <div className="cards">
+
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {testimonials.map((t, i) => (
-            <div className="testimonial-card" key={i}>
-              <p className="quote">❝ {t.text} ❞</p>
-              <div className="user">
-                {t.image && <img src={t.image} alt={t.author} />}
-                <div>
-                  <p className="author">{t.author}</p>
-                  <p className="role">{t.role}</p>
+            <div
+              key={i}
+              className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-6 flex flex-col justify-between"
+            >
+              <p className="text-gray-700 text-sm sm:text-base mb-6">
+                ❝ {t.text} ❞
+              </p>
+              <div className="flex items-center gap-4 mt-auto">
+                {t.image && (
+                  <img
+                    src={t.image}
+                    alt={t.author}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                )}
+                <div className="text-left">
+                  <p className="font-semibold text-gray-900">{t.author}</p>
+                  <p className="text-gray-500 text-sm">{t.role}</p>
                 </div>
               </div>
             </div>

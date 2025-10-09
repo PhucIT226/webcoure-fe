@@ -26,7 +26,6 @@ axiosClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    nProgress.done();
     console.error("❌ [Request Error]:", error);
     return Promise.reject(error);
   }
@@ -39,8 +38,6 @@ axiosClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    nProgress.done();
-
     const originalRequest = error.config;
 
     if (

@@ -4,7 +4,7 @@ import { createCourse, updateCourse } from "../../../redux/courseSlice";
 import type { TAny } from "../../../types/common";
 
 type Props = {
-  initialData?: any;
+  initialData?: TAny;
   onClose: () => void;
 };
 

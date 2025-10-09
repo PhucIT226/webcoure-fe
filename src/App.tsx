@@ -21,8 +21,6 @@ import CourseVid from "./pages/user/Home/Content/CourseVid";
 import SearchCourses from "./pages/user/Home/Header/SearchCourse";
 
 function App() {
-  const location = useLocation();
-  console.log(location);
   return (
     <Routes>
       {/* User */}
