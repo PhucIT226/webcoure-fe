@@ -1,0 +1,71 @@
+$primary: #7c3aed; // chỉ 1 biến màu chính
+
+.testimonials {
+  background: #f9fafb;
+  padding: 60px 20px;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .testimonial-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .quote {
+      color: #374151;
+      font-size: 16px;
+      line-height: 1.5;
+
+      .highlight {
+        color: $primary;
+        text-decoration: underline;
+      }
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      .author {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .role {
+        font-size: 13px;
+        color: #6b7280;
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+/* :root {
+  --color-base-content: oklch(97.807% 0.029 256.847);
+} */
+
+/* .disabled {
+  @apply disabled:bg-gray-400 disabled:text-gray-700 cursor-not-allowed;
+}
+
+a {
+  @apply no-underline;
+} */
+
+/* Đặt class custom cho button gradient */
+
+/* .btn-gradient {
+  @apply flex items-center gap-2 text-white px-5 py-2 rounded-lg shadow-lg transition-all duration-300 font-medium;
+
+  background: linear-gradient(to right, #6366f1, #8b5cf6); 
+} */
+
+/* .btn-gradient:hover {
+  background: linear-gradient(to right, #4f46e5, #7c3aed); 
+} */

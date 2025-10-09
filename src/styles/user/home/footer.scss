@@ -1,0 +1,36 @@
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  a {
+    text-decoration: none;
+    color: #ccc;
+    font-size: 18px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.explore {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  a {
+    text-decoration: none;
+    color: #ccc;
+    font-size: 18px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.social-media {
+  .icon {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    a {
+      color: #ccc;
+    }
+  }
+}

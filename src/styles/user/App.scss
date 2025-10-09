@@ -1,0 +1,33 @@
+.app-container {
+  .header-container {
+    .navbar {
+      z-index: 10;
+    }
+  }
+}
+.homepage-content {
+  position: relative;
+  top: 100px;
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  .title-1 {
+    font-size: 30px;
+    //   color: white;
+    font-weight: 700;
+  }
+  .title-2 {
+    font-size: 20px;
+    button {
+      padding: 5px;
+      border-radius: 10px;
+    }
+  }
+}
+video {
+  width: 100vw;
+  bottom: 0;
+  position: fixed;
+}
