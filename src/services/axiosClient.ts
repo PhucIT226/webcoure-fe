@@ -1,8 +1,8 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { API_URL } from "../constants";
-import NProgress from "nprogress";
+import nProgress from "nprogress";
 
-NProgress.configure({ showSpinner: false, trickleSpeed: 100 });
+nProgress.configure({ showSpinner: false, trickleSpeed: 100 });
 
 const axiosClient = axios.create({
   baseURL: API_URL,
@@ -13,7 +13,7 @@ const axiosClient = axios.create({
 // 🔹 Interceptor Request
 axiosClient.interceptors.request.use(
   (config) => {
-    NProgress.start();
+    nProgress.start();
 
     const me = localStorage.getItem("me");
     if (me) {
@@ -26,7 +26,7 @@ axiosClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    NProgress.done();
+    nProgress.done();
     console.error("❌ [Request Error]:", error);
     return Promise.reject(error);
   }
@@ -35,11 +35,11 @@ axiosClient.interceptors.request.use(
 // 🔹 Interceptor Response
 axiosClient.interceptors.response.use(
   (response) => {
-    NProgress.done();
+    nProgress.done();
     return response;
   },
   async (error) => {
-    NProgress.done();
+    nProgress.done();
 
     const originalRequest = error.config;
 
@@ -50,7 +50,9 @@ axiosClient.interceptors.response.use(
       !originalRequest.url.includes("/auth/refresh")
     ) {
       originalRequest._retry = true;
-      console.warn("⚠️ [401] Access token có thể hết hạn → thử refresh token...");
+      console.warn(
+        "⚠️ [401] Access token có thể hết hạn → thử refresh token..."
+      );
 
       try {
         const refreshRes = await axiosClient.post("/auth/refresh");

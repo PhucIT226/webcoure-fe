@@ -1,0 +1,27 @@
+.btn-signin {
+  border: 1px solid #4260cc;
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 7px;
+  color: #4260cc;
+  background: #f9f9f9;
+  margin-right: 10px;
+}
+.btn-signin:hover {
+  background-color: #ccc;
+}
+
+.btn-signup {
+  border: 1px solid #4260cc;
+  background-color: #4260cc !important;
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 7px;
+  color: white;
+  background: #f9f9f9;
+  margin-right: 10px;
+}
+.btn-signup:hover {
+  color: #4260cc;
+  background: #dde5eb !important;
+}/*# sourceMappingURL=Header.css.map */

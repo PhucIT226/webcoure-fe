@@ -1,0 +1,28 @@
+.btn-register {
+  border: none;
+  color: #4260cc;
+  background: #f9f9f9;
+}
+.btn-register:hover {
+  color: #5771cf;
+}
+
+.btn-submit .loaderIcon {
+  margin-right: 7px;
+  top: 2px;
+  animation: spin 1s infinite linear;
+}
+.btn-submit:disabled {
+  background-color: #dddddd !important;
+  color: #4260cc !important;
+  cursor: no-drop;
+}
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
+}/*# sourceMappingURL=login.css.map */

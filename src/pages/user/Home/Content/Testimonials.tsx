@@ -1,5 +1,4 @@
-import React from "react";
-import "../../../../styles/user/home/Testimonials.scss";
+// import "../../../../styles/user/home/Testimonials.scss";
 const testimonials = [
   {
     text: (

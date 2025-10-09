@@ -1,7 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import {
   FaBars,
-  FaChevronDown,
   FaThLarge,
   FaUser,
   FaUserTie,
@@ -78,8 +77,8 @@ const menu: MenuType = [
   },
   {
     label: "Voucher",
-    to: "coupon-list",   
-    icon: FaGift,       
+    to: "coupon-list",
+    icon: FaGift,
     defaultColor: "text-red-500",
     children: [],
   },

@@ -8,7 +8,7 @@ type UserLayoutProps = {
   children: ReactNode;
 };
 
-const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
+const UserLayout: React.FC<UserLayoutProps> = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
   return (
