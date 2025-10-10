@@ -35,7 +35,7 @@ const menu: MenuType = [
   },
   {
     label: "Khóa học",
-    to: "course-list",
+    to: "courses",
     icon: FaGraduationCap,
     defaultColor: "text-blue-600",
     children: [],

@@ -5,7 +5,7 @@ export type Course = {
   title: string;
   slug: string;
   description?: string;
-  instructor: {name: string, email: string};
+  instructor: {name: string};
   category: { name: string };
   price: number;
   studentCount?: number;

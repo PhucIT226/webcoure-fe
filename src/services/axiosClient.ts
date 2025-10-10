@@ -41,8 +41,7 @@ axiosClient.interceptors.response.use(
     const originalRequest = error.config;
 
     if (
-      error.response &&
-      error.response.status === 401 &&
+      error.response?.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/auth/refresh")
     ) {
@@ -55,7 +54,7 @@ axiosClient.interceptors.response.use(
         const refreshRes = await axiosClient.post("/auth/refresh");
 
         if (refreshRes.data?.accessToken) {
-          // 🔹 Cập nhật access token mới
+          // Lưu accessToken mới vào localStorage
           const me = localStorage.getItem("me");
           const user = me ? JSON.parse(me) : {};
           user.accessToken = refreshRes.data.accessToken;
@@ -64,19 +63,9 @@ axiosClient.interceptors.response.use(
           if (originalRequest.headers) {
             originalRequest.headers.Authorization = `Bearer ${refreshRes.data.accessToken}`;
           }
-        } else {
-          console.warn("⚠️ Refresh không trả accessToken (cookie-based auth)");
+          return axiosClient(originalRequest);
         }
-
-        // 🔹 Thử lại request gốc
-        return axiosClient(originalRequest);
       } catch (refreshError) {
-        if (axios.isAxiosError(refreshError)) {
-          console.error("❌ [Refresh Error]:", refreshError.response?.data);
-        } else {
-          console.error("❌ [Unknown Error]:", refreshError);
-        }
-
         localStorage.removeItem("me");
         window.location.href = "/login";
         return Promise.reject(refreshError);

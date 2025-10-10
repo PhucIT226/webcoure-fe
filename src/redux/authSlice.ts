@@ -6,7 +6,6 @@ import { authService } from "../services/authService";
 type AuthState = {
   isAuthenticated: boolean | null;
   user: UserRes | null;
-  refreshToken?: string;
   accessToken?: string;
   loading: boolean;
   error: string | null;
@@ -14,6 +13,7 @@ type AuthState = {
 const initialState: AuthState = {
   isAuthenticated: null,
   user: null,
+  accessToken: undefined,
   loading: false,
   error: null,
 };
@@ -61,7 +61,13 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         state.accessToken = action.payload?.accessToken;
-        state.refreshToken = action.payload?.refreshToken;
+        state.user = action.payload.user || null;
+
+        // Lưu vào localStorage
+        localStorage.setItem(
+          "me",
+          JSON.stringify({ accessToken: action.payload.accessToken })
+        );
       })
       .addCase(signin.rejected, (state, action) => {
         state.loading = false;
@@ -76,6 +82,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = false;
         state.user = null;
+        state.accessToken = undefined;
       })
       .addCase(signout.rejected, (state, action) => {
         state.loading = false;

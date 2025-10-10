@@ -5,7 +5,7 @@ import Register from "./Auth/register";
 
 import Admin from "./pages/admin/admin";
 import Dashboard from "./pages/admin/dashboard/dashboard";
-import CourseList from "./pages/admin/courses/course-list";
+// import CourseList from "./pages/admin/courses/course-list";
 import CourseDetail from "./components/admin/CourseDetail";
 import UserList from "./pages/admin/users/user-list";
 import InstructorList from "./pages/admin/instructors/instructor-list";
@@ -32,7 +32,7 @@ function App() {
       {/* Admin */}
       <Route path="/admin" element={<Admin />}>
         <Route index element={<Dashboard />} />
-        <Route path="course-list" element={<CourseList />} />
+        {/* <Route path="course-list" element={<CourseList />} /> */}
         <Route path="course/:id" element={<CourseDetail />} />
         <Route path="student-list" element={<UserList />} />
         <Route path="user-list" element={<UserList />} />

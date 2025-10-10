@@ -1,3 +1,11 @@
+export type UserRes = {
+  email: string;
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type LoginForm = {
   email: string;
   password: string;
@@ -7,20 +15,13 @@ export type LoginForm = {
 export type LoginRes = {
   accessToken: string;
   refreshToken: string;
-  user: string;
+  user: UserRes;
 };
 
 export type LogoutRes = {
   message: string;
 };
 
-export type UserRes = {
-  email: string;
-  id: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
 
 export interface RegisterForm {
   name: string;

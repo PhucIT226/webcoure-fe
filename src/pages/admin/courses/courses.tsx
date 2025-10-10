@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 export default function CourseList() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const { data: courses, pagination, loading, error } = useAppSelector(
     (state) => state.course
   );
@@ -55,6 +54,16 @@ export default function CourseList() {
         </div>
       </div>
 
+      {/* Button add */}
+      <div className="mb-4">
+        <button
+          onClick={() => navigate("/admin/courses/create")}
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm"
+        >
+          Thêm khóa học
+        </button>
+      </div>
+
       {/* Loading/Error */}
       {loading && <p>Đang tải dữ liệu...</p>}
       {error && <p className="text-red-500">Lỗi: {error}</p>}
@@ -71,9 +80,7 @@ export default function CourseList() {
               <th className="border text-center px-4 py-3">Học viên</th>
               <th className="border text-center px-4 py-3">Trạng thái</th>
               <th className="border text-center px-4 py-3">Ngày tạo</th>
-              <th className="border text-center px-4 py-3">
-                Hành động
-              </th>
+              <th className="border text-center px-4 py-3">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -86,12 +93,8 @@ export default function CourseList() {
                   <td className="border text-center px-4 py-2">
                     {(page - 1) * (pagination?.pageSize ?? 15) + index + 1}
                   </td>
-                  <td className="border px-4 py-2 font-medium">
-                    {course.title}
-                  </td>
-                  <td className="border px-4 py-2">
-                    {course.instructor?.name}
-                  </td>
+                  <td className="border px-4 py-2 font-medium">{course.title}</td>
+                  <td className="border px-4 py-2">{course.instructor?.name}</td>
                   <td className="border px-4 py-2 text-right">
                     {Number(course.price).toLocaleString("vi-VN")} đ
                   </td>
@@ -112,19 +115,19 @@ export default function CourseList() {
                     </span>
                   </td>
                   <td className="border text-center px-4 py-2">
-                    {new Date(course.createdAt || "").toLocaleDateString(
-                      "vi-VN"
-                    )}
+                    {new Date(course.createdAt || "").toLocaleDateString("vi-VN")}
                   </td>
                   <td className="border px-4 py-2 text-right flex gap-2 justify-end">
-                    {/* Nút chi tiết dẫn sang trang chi tiết */}
                     <button
                       onClick={() => navigate(`/admin/course/${course.id}`, { state: { course } })}
                       className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                     >
                       Chi tiết
                     </button>
-                    <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
+                    <button
+                      onClick={() => navigate(`/admin/courses/${course.id}/edit`)}
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
+                    >
                       Sửa
                     </button>
                     <button
@@ -138,10 +141,7 @@ export default function CourseList() {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan={9}
-                  className="px-4 py-4 text-center text-gray-500"
-                >
+                <td colSpan={9} className="px-4 py-4 text-center text-gray-500">
                   Không có khóa học nào
                 </td>
               </tr>

@@ -64,7 +64,7 @@ export default function CourseDetail() {
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaUserTie className="mr-3 text-blue-600 text-lg" />
-              Giảng viên: {course.instructor?.name} ({course.instructor?.email})
+              Giảng viên: {course.instructor?.name}
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaFolderOpen className="mr-3 text-yellow-500 text-lg" />
