@@ -13,16 +13,18 @@
       padding: 40px;
       color: white;
       height: 100%;
-      .text-box {
-        flex: 1;
+      .text-box h2 {
+        font-size: 32px;
+        margin-bottom: 15px;
       }
+
       .text-box p {
         font-size: 18px;
         margin-bottom: 20px;
       }
-      .img-box {
-        flex: 1;
-        text-align: right;
+      .img-box img {
+        max-width: 250px;
+        animation: float 3s ease-in-out infinite;
       }
     }
     .slide-content-2 {

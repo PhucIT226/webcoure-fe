@@ -32,7 +32,7 @@ const Slider = () => {
               </button>
             </div>
             <div className="img-box">
-              <img src="../src/assets/react.png" alt="ReactJS" />
+              <img src="../../public/react.png" alt="ReactJS" />
             </div>
           </div>
         </SwiperSlide>
@@ -50,7 +50,7 @@ const Slider = () => {
               </button>
             </div>
             <div className="img-box">
-              <img src="../src/assets/nodejs.png" alt="NodeJS" />
+              <img src="../../public/nodejs.png" alt="NodeJS" />
             </div>
           </div>
         </SwiperSlide>

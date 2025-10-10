@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../../../../styles/user/home/Categories.scss";
 
 const Categories = () => {
+  <img src="" alt="" />;
   const categories = [
     {
       id: 1,
@@ -15,7 +16,7 @@ const Categories = () => {
           oldPrice: 1379000,
           rating: 4.5,
           learners: "119,987",
-          image: "../../../../../src/assets/python.jpg",
+          image: "../../../../../public/python.jpg",
         },
         {
           id: 102,
@@ -25,7 +26,7 @@ const Categories = () => {
           oldPrice: 399000,
           rating: 4.3,
           learners: "91,313",
-          image: "../../../../../src/assets/machine.jpg",
+          image: "../../../../../public/machine.jpg",
         },
       ],
     },
@@ -41,7 +42,7 @@ const Categories = () => {
           oldPrice: 1179000,
           rating: 4.6,
           learners: "26,639",
-          image: "../../../../../src/assets/reacttutor.jpg",
+          image: "../../../../../public/reacttutor.jpg",
         },
         {
           id: 202,
@@ -51,7 +52,7 @@ const Categories = () => {
           oldPrice: 1779000,
           rating: 4.7,
           learners: "35,195",
-          image: "../../../../../src/assets/nodejsexpress.jpg",
+          image: "../../../../../public/nodejsexpress.jpg",
         },
       ],
     },
