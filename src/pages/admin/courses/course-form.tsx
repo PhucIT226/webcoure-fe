@@ -1,12 +1,4 @@
-import { useState } from "react";
-import { useAppDispatch } from "../../../hooks";
-import { createCourse, updateCourse } from "../../../redux/courseSlice";
-import type { TAny } from "../../../types/common";
-
-type Props = {
-  initialData?: TAny;
-  onClose: () => void;
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { Course } from "../../../types/course";
 
 type Props = {
@@ -22,17 +14,12 @@ export default function CourseForm({ initialData, onSubmit }: Props) {
   const [category, setCategory] = useState({ name: "" });
   const [price, setPrice] = useState(0);
   const [studentCount, setStudentCount] = useState(0);
-  const [status, setStatus] = useState<"published" | "draft" | "closed">("draft");
+  const [status, setStatus] = useState<"published" | "draft" | "closed">(
+    "draft"
+  );
   const [thumbnailFiles, setThumbnailFiles] = useState<File[]>([]);
   const [preview, setPreview] = useState<string[]>([]);
 
-  const handleSubmit = (e: TAny) => {
-    e.preventDefault();
-    const payload = { title, instructor, category, price, status };
-    if (initialData?.id) {
-      dispatch(updateCourse({ id: initialData.id, course: payload }));
-    } else {
-      dispatch(createCourse(payload));
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title || "");
@@ -143,7 +130,11 @@ export default function CourseForm({ initialData, onSubmit }: Props) {
         value={status}
         onChange={(e) => {
           const value = e.target.value;
-          if (value === "published" || value === "draft" || value === "closed") {
+          if (
+            value === "published" ||
+            value === "draft" ||
+            value === "closed"
+          ) {
             setStatus(value);
           }
         }}
