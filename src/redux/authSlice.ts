@@ -9,17 +9,23 @@ type AuthState = {
   accessToken?: string;
   loading: boolean;
   error: string | null;
+  verifyStatus: "idle" | "loading" | "success" | "error";
+  verifyMessage: string;
 };
+
 const initialState: AuthState = {
   isAuthenticated: null,
   user: null,
   accessToken: undefined,
   loading: false,
   error: null,
+  verifyStatus: "idle",
+  verifyMessage: "",
 };
 
+// 🔹 Đăng nhập
 export const signin = createAsyncThunk(
-  "auth/signin", // type
+  "auth/signin",
   async (payload: LoginForm, { rejectWithValue }) => {
     try {
       const response = await authService.signin(payload);
@@ -32,12 +38,14 @@ export const signin = createAsyncThunk(
     }
   }
 );
+
+// 🔹 Đăng xuất
 export const signout = createAsyncThunk(
-  "auth/signout", // type
+  "auth/signout",
   async (_, { rejectWithValue }) => {
     try {
       const response = await authService.signout();
-      return response; // Dữ liệu trả về sẽ nằm ở action.payload
+      return response;
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         return rejectWithValue(err.response?.data || "Lỗi không xác định");
@@ -46,13 +54,39 @@ export const signout = createAsyncThunk(
     }
   }
 );
+
+// 🔹 Xác minh email
+export const verifyEmail = createAsyncThunk(
+  "auth/verifyEmail",
+  async (token: string, { rejectWithValue }) => {
+    try {
+      // gọi API verify email (gộp chung service)
+      const response = await authService.verifyEmail(token);
+      return response.message || "Email xác minh thành công!";
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(
+          err.response?.data?.message ||
+            "Liên kết không hợp lệ hoặc đã hết hạn!"
+        );
+      }
+      return rejectWithValue("Lỗi không xác định");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    resetVerify(state) {
+      state.verifyStatus = "idle";
+      state.verifyMessage = "";
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // signin
+      // =============== SIGNIN ===============
       .addCase(signin.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -63,7 +97,7 @@ const authSlice = createSlice({
         state.accessToken = action.payload?.accessToken;
         state.user = action.payload.user || null;
 
-        // Lưu vào localStorage
+        // ✅ Lưu token vào localStorage
         localStorage.setItem(
           "me",
           JSON.stringify({ accessToken: action.payload.accessToken })
@@ -72,8 +106,9 @@ const authSlice = createSlice({
       .addCase(signin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
-    builder
+      })
+
+      // =============== SIGNOUT ===============
       .addCase(signout.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -86,9 +121,26 @@ const authSlice = createSlice({
       })
       .addCase(signout.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string; // Lưu lỗi nếu có
+        state.error = action.payload as string;
+      })
+
+      // =============== VERIFY EMAIL ===============
+      .addCase(verifyEmail.pending, (state) => {
+        state.verifyStatus = "loading";
+        state.verifyMessage = "";
+      })
+      .addCase(verifyEmail.fulfilled, (state, action) => {
+        state.verifyStatus = "success";
+        state.verifyMessage = action.payload as string;
+      })
+      .addCase(verifyEmail.rejected, (state, action) => {
+        state.verifyStatus = "error";
+        state.verifyMessage =
+          (action.payload as string) ||
+          "Liên kết không hợp lệ hoặc đã hết hạn!";
       });
   },
 });
 
+export const { resetVerify } = authSlice.actions;
 export default authSlice.reducer;

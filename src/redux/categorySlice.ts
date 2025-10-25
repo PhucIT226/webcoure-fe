@@ -1,8 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import CategoryService from "../services/categoryService";
-import type { Category, CategoryResDto, GetAllCategoryParams } from "../types/category";
 import type { TAny } from "../types/common";
+import type {
+  Category,
+  CategoryResDto,
+  GetAllCategoryParams,
+} from "../types/category";
 
 type CategoryState = {
   data: Category[];

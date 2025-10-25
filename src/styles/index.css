@@ -3,9 +3,15 @@
 
 @plugin "tailwindcss-animate";
 
-/* @import "./App.css"; */
+@import "./App.css";
 
 @import "tw-animate-css";
+
+.snapshot-mode .recharts-responsive-container {
+  width: 700px !important; /* hoặc 800 nếu biểu đồ rộng */
+  height: 300px !important;
+}
+
 
 /* @custom-variant dark (&:is(.dark *));
 

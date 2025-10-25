@@ -120,13 +120,10 @@ const orderSlice = createSlice({
         }
       )
 
-      // Create
-      .addCase(
-        createOrder.fulfilled,
-        (state, action: PayloadAction<Order>) => {
-          state.data.push(action.payload);
-        }
-      )
+       // Create
+      .addCase(createOrder.fulfilled, (state, action: PayloadAction<Order>) => {
+        state.data.push(action.payload);
+      })
 
       // Update
       .addCase(

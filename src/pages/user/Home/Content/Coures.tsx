@@ -13,7 +13,7 @@ const Courses = () => {
 
   useEffect(() => {
     dispatch(fetchCourses());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="container mx-auto px-4">
@@ -36,7 +36,12 @@ const Courses = () => {
               key={course.id}
               onClick={() =>
                 navigate(`/course/${course.id}`, {
-                  state: { id: 7, color: "green" },
+                  state: {
+                    courseTitle: course.title,
+                    courseDes: course.description,
+                    courseId: course.id,
+                    coursePrice: course.price,
+                  },
                 })
               }
               className="cursor-pointer"

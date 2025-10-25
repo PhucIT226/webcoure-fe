@@ -18,7 +18,7 @@ const initialState: UserState = {
   error: null,
 };
 
-// Thunks
+// ======================== THUNKS ========================
 export const fetchUsers = createAsyncThunk<
   UserResDto,
   GetAllUserParams | undefined,
@@ -31,31 +31,30 @@ export const fetchUsers = createAsyncThunk<
   }
 });
 
-// Lấy user theo id
-export const fetchUserById = createAsyncThunk<User, string, { rejectValue: string }>(
-  "users/fetchById",
-  async (id, { rejectWithValue }) => {
-    try {
-      return await UserService.getById(id);
-    } catch (err: TAny) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+export const fetchUserById = createAsyncThunk<
+  User,
+  string,
+  { rejectValue: string }
+>("users/fetchById", async (id, { rejectWithValue }) => {
+  try {
+    return await UserService.getById(id);
+  } catch (err: TAny) {
+    return rejectWithValue(err.response?.data?.message || err.message);
   }
-);
+});
 
-// Tạo user mới
-export const createUser = createAsyncThunk<User, Partial<User>, { rejectValue: string }>(
-  "users/create",
-  async (user, { rejectWithValue }) => {
-    try {
-      return await UserService.create(user);
-    } catch (err: TAny) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+export const createUser = createAsyncThunk<
+  User,
+  Partial<User>,
+  { rejectValue: string }
+>("users/create", async (user, { rejectWithValue }) => {
+  try {
+    return await UserService.create(user);
+  } catch (err: TAny) {
+    return rejectWithValue(err.response?.data?.message || err.message);
   }
-);
+});
 
-// Cập nhật user
 export const updateUser = createAsyncThunk<
   User,
   { id: string; user: Partial<User> },
@@ -68,20 +67,20 @@ export const updateUser = createAsyncThunk<
   }
 });
 
-// Xóa user
-export const deleteUser = createAsyncThunk<string, string, { rejectValue: string }>(
-  "users/delete",
-  async (id, { rejectWithValue }) => {
-    try {
-      await UserService.delete(id);
-      return id;
-    } catch (err: TAny) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+export const deleteUser = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("users/delete", async (id, { rejectWithValue }) => {
+  try {
+    await UserService.delete(id);
+    return id;
+  } catch (err: TAny) {
+    return rejectWithValue(err.response?.data?.message || err.message);
   }
-);
+});
 
-// ======================= Slice =======================
+// ======================== SLICE ========================
 const userSlice = createSlice({
   name: "users",
   initialState,
@@ -94,42 +93,53 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch all
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchUsers.fulfilled, (state, action: PayloadAction<UserResDto>) => {
-        state.loading = false;
-        state.data = action.payload.data;
-        state.pagination = action.payload.pagination;
-      })
+      .addCase(
+        fetchUsers.fulfilled,
+        (state, action: PayloadAction<UserResDto>) => {
+          state.loading = false;
+          state.data = action.payload.data.map((user: TAny) => ({
+            ...user,
+            avatarUrls: user.avatarUrl
+              ? [{ url: user.avatarUrl }]
+              : [],
+          }));
+          state.pagination = action.payload.pagination;
+        }
+      )
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-
-      // Fetch by id
-      .addCase(fetchUserById.fulfilled, (state, action: PayloadAction<User>) => {
-        const exists = state.data.find((u) => u.id === action.payload.id);
-        if (!exists) state.data.push(action.payload);
-      })
-
-      // Create
-      .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
-        state.data.push(action.payload);
-      })
-
-      // Update
-      .addCase(updateUser.fulfilled, (state, action: PayloadAction<User>) => {
-        const index = state.data.findIndex((u) => u.id === action.payload.id);
-        if (index !== -1) state.data[index] = action.payload;
-      })
-
-      // Delete
-      .addCase(deleteUser.fulfilled, (state, action: PayloadAction<string>) => {
-        state.data = state.data.filter((u) => u.id !== action.payload);
-      });
+      .addCase(
+        fetchUserById.fulfilled,
+        (state, action: PayloadAction<User>) => {
+          const existing = state.data.find((u) => u.id === action.payload.id);
+          if (!existing) state.data.push(action.payload);
+        }
+      )
+      .addCase(
+        createUser.fulfilled,
+        (state, action: PayloadAction<User>) => {
+          state.data.push(action.payload);
+        }
+      )
+      .addCase(
+        updateUser.fulfilled,
+        (state, action: PayloadAction<User>) => {
+          const index = state.data.findIndex((u) => u.id === action.payload.id);
+          if (index !== -1) state.data[index] = action.payload;
+        }
+      )
+      .addCase(
+        deleteUser.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.data = state.data.filter((u) => u.id !== action.payload);
+        }
+      );
   },
 });
 

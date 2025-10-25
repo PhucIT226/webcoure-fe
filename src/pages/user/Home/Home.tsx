@@ -4,6 +4,7 @@ import Categories from "./Content/Categories";
 import "../../../styles/user/home/home.scss";
 import DetailPanel from "./Content/DetailPanel";
 import Testimonials from "./Content/Testimonials";
+import ChatAI from "./Content/ChatAi";
 
 const Home = () => {
   return (
@@ -20,6 +21,8 @@ const Home = () => {
       <div className="testimonial-container">
         <Testimonials />
       </div>
+
+      <ChatAI />
     </>
   );
 };

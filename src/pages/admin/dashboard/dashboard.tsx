@@ -1,256 +1,150 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { fetchDashboardData } from "../../../redux/dashboardSlice";
 import {
-  FaUser,
-  FaUserTie,
-  FaGraduationCap,
-  FaCreditCard,
-  FaChartLine,
-  FaStar,
+  FaBookOpen,
+  FaUserGraduate,
+  FaCartArrowDown,
+  FaMoneyBillWave,
+  FaFilePdf,
 } from "react-icons/fa";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line, Doughnut } from "react-chartjs-2";
-import "chart.js/auto";
-import { Link } from "react-router-dom";
-import type { Menu } from "../../../types/menu";
 
-ChartJS.register(
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend
-);
+import { StatCard } from "../../../components/admin/dashboards/StatCard";
+import { ChartRevenue } from "../../../components/admin/dashboards/ChartRevenue";
+import { ChartNewUsers } from "../../../components/admin/dashboards/ChartNewUsers";
+import { TopCourses } from "../../../components/admin/dashboards/TopCourses";
+import { RecentOrders } from "../../../components/admin/dashboards/RecentOrders";
+import { RecentReviews } from "../../../components/admin/dashboards/RecentReviews";
+import { Notifications } from "../../../components/admin/dashboards/Notifications";
+import { DashboardPDFPreview } from "../../../components/admin/dashboards/DashboardPDFPreview";
+import type { VisibleSections } from "../../../types/dashboard";
 
-type MenuType = Menu & { defaultColor: string; value?: number };
+const DashboardPage = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { summary, loading } = useAppSelector((state) => state.dashboard);
 
-const menu: MenuType[] = [
-  {
-    label: "Khóa học",
-    to: "product-list",
-    icon: FaGraduationCap,
-    defaultColor: "text-blue-600",
-    children: [],
-    value: 30,
-  },
-  {
-    label: "Học viên",
-    to: "user-list",
-    icon: FaUser,
-    defaultColor: "text-green-600",
-    children: [],
-    value: 350,
-  },
-  {
-    label: "Giảng viên",
-    to: "category-list",
-    icon: FaUserTie,
-    defaultColor: "text-purple-600",
-    children: [],
-    value: 40,
-  },
-  {
-    label: "Đơn hàng",
-    to: "tag-list",
-    icon: FaCreditCard,
-    defaultColor: "text-orange-500",
-    children: [],
-    value: 85,
-  },
-];
+  const [showPreview, setShowPreview] = useState(false);
 
-const incomeData = [
-  { date: "2024-08-01", value: 1200 },
-  { date: "2024-08-02", value: 1800 },
-  { date: "2024-08-03", value: 900 },
-  { date: "2024-08-04", value: 2200 },
-  { date: "2024-08-05", value: 1500 },
-  { date: "2024-08-06", value: 1700 },
-  { date: "2024-08-07", value: 2100 },
-];
+  useEffect(() => {
+    dispatch(fetchDashboardData());
+  }, [dispatch]);
 
-const latestOrders = [
-  { id: "ORD001", student: "Nguyễn Văn A", course: "ReactJS Cơ bản", amount: "$50", status: "Paid" },
-  { id: "ORD002", student: "Trần Thị B", course: "Node.js Nâng cao", amount: "$70", status: "Pending" },
-  { id: "ORD003", student: "Lê Văn C", course: "UI/UX Design", amount: "$40", status: "Paid" },
-];
+  // ✅ Các phần hiển thị mặc định
+  const visibleSections: VisibleSections = {
+    summary: true,
+    chart: true,
+    topCourses: true,
+    orders: true,
+    reviews: true,
+    notifications: true,
+  };
 
-const reviewData = {
-  labels: ["5⭐", "4⭐", "3⭐"],
-  datasets: [
-    {
-      data: [65, 25, 10],
-      backgroundColor: ["#34d399", "#60a5fa", "#fbbf24"],
-      borderWidth: 2,
-    },
-  ],
-};
-
-function Dashboard() {
-  const [dateRange, setDateRange] = useState({
-    from: "2024-08-01",
-    to: "2024-08-07",
-  });
-
-  const filteredIncome = incomeData.filter(
-    (d) => d.date >= dateRange.from && d.date <= dateRange.to
-  );
-
-  const chartData = {
-    labels: filteredIncome.map((d) => d.date),
-    datasets: [
-      {
-        label: "Doanh thu ($)",
-        data: filteredIncome.map((d) => d.value),
-        backgroundColor: "rgba(139, 92, 246, 0.7)",
-        borderRadius: 10,
-      },
-    ],
+  // ✅ Lấy cài đặt phần PDF đã lưu
+  const getPDFSections = (): VisibleSections => {
+    const saved = localStorage.getItem("dashboardPDFSections");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          summary: true,
+          chart: true,
+          topCourses: true,
+          orders: true,
+          reviews: true,
+          notifications: true,
+        };
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        {menu.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.label}
-              to={item.to}
-              className="rounded-2xl bg-white flex flex-col items-center justify-center py-8 transition hover:scale-105 hover:shadow-lg"
-            >
-              <span className={`text-4xl mb-3 ${item.defaultColor}`}>
-                <Icon />
-              </span>
-              <span className="text-2xl font-extrabold text-gray-800">
-                {item.value ?? 0}
-              </span>
-              <span className="text-sm mt-1 text-gray-600">{item.label}</span>
-            </Link>
-          );
-        })}
+    <div className="min-h-screen bg-base-100 p-8 space-y-8">
+      {/* 🧭 Header */}
+      <div className="flex flex-wrap justify-between items-center gap-4">
+        <h1 className="text-3xl font-extrabold text-base-content tracking-tight">
+          Dashboard tổng quan
+        </h1>
+
+        <button
+          onClick={() => setShowPreview(true)}
+          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+        >
+          <FaFilePdf className="text-lg" />
+          Xuất PDF
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Chart */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-purple-700 flex items-center gap-2">
-              <FaChartLine /> Phân tích doanh thu
-            </h2>
-            <div className="flex items-center gap-2">
-              <input
-                type="date"
-                className="input input-bordered"
-                value={dateRange.from}
-                onChange={(e) =>
-                  setDateRange((r) => ({ ...r, from: e.target.value }))
-                }
-                max={dateRange.to}
-              />
-              <input
-                type="date"
-                className="input input-bordered"
-                value={dateRange.to}
-                onChange={(e) =>
-                  setDateRange((r) => ({ ...r, to: e.target.value }))
-                }
-                min={dateRange.from}
-              />
-            </div>
-          </div>
-          <Line
-  data={{
-    ...chartData,
-    datasets: [
-      {
-        ...chartData.datasets[0],
-        fill: true, // tạo vùng màu
-        backgroundColor: "rgba(139, 92, 246, 0.2)", // màu nền area
-        borderColor: "rgba(139, 92, 246, 1)",       // màu viền line
-      },
-    ],
-  }}
-  options={{
-    responsive: true,
-    plugins: { legend: { display: false } },
-    elements: { line: { tension: 0.3 } },
-    scales: {
-      x: { grid: { display: false } },
-      y: { beginAtZero: true, grid: { color: "#f3f1fe" } },
-    },
-  }}
-/>
+      {/* 📊 Thống kê tổng quan */}
+      {visibleSections.summary && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          <StatCard
+            title="Tổng khóa học"
+            value={summary?.totalCourses ?? 0}
+            icon={<FaBookOpen className="text-orange-500" />}
+            loading={loading}
+            onClick={() => navigate("/admin/courses")}
+          />
 
+          <StatCard
+            title="Tổng học viên"
+            value={summary?.totalUsers ?? 0}
+            icon={<FaUserGraduate className="text-blue-500" />}
+            loading={loading}
+            onClick={() => navigate("/admin/users")}
+          />
 
+          <StatCard
+            title="Tổng đơn hàng"
+            value={summary?.totalOrders ?? 0}
+            icon={<FaCartArrowDown className="text-yellow-500" />}
+            loading={loading}
+            onClick={() => navigate("/admin/orders")}
+          />
+
+          <StatCard
+            title="Doanh thu"
+            value={Math.ceil(summary?.totalRevenue ?? 0).toLocaleString("vi-VN")}
+            icon={<FaMoneyBillWave className="text-green-500" />}
+            loading={loading}
+            onClick={() => navigate("/admin/revenue")}
+          />
         </div>
+      )}
 
-        {/* Reviews */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <h2 className="text-lg font-bold text-yellow-600 flex items-center gap-2 mb-6">
-            <FaStar /> Thống kê đánh giá
-          </h2>
-          <div className="w-64 mx-auto">
-            <Doughnut
-              data={reviewData}
-              options={{
-                responsive: true,
-                plugins: { legend: { position: "bottom" } },
-              }}
-            />
+      {/* 📈 Biểu đồ & Thông báo */}
+      {visibleSections.chart && (
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-2 grid grid-cols-1 gap-6">
+            <ChartRevenue />
+            <ChartNewUsers />
           </div>
+          {visibleSections.notifications && <Notifications />}
         </div>
+      )}
+
+      {/* 🔥 Top bán chạy & Đơn hàng */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {visibleSections.topCourses && <TopCourses />}
+        {visibleSections.orders && <RecentOrders />}
       </div>
 
-      {/* Orders */}
-      <div className="bg-white rounded-2xl shadow-md p-6 mt-10">
-        <h2 className="text-lg font-bold text-indigo-600 mb-6">
-          Đơn hàng mới nhất
-        </h2>
-        <table className="table w-full">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th>Mã đơn</th>
-              <th>Học viên</th>
-              <th>Khóa học</th>
-              <th>Số tiền</th>
-              <th>Trạng thái</th>
-            </tr>
-          </thead>
-          <tbody>
-            {latestOrders.map((order) => (
-              <tr key={order.id} className="hover:bg-gray-50 transition">
-                <td className="font-bold">{order.id}</td>
-                <td>{order.student}</td>
-                <td>{order.course}</td>
-                <td>{order.amount}</td>
-                <td>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      order.status === "Paid"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}
-                  >
-                    {order.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {/* 💬 Đánh giá gần đây */}
+      {visibleSections.reviews && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <RecentReviews />
+        </div>
+      )}
+
+      {/* 🧾 Modal Preview PDF */}
+      {showPreview && (
+        <DashboardPDFPreview
+          summary={summary}
+          loading={loading}
+          visibleSections={getPDFSections()}
+          onClose={() => setShowPreview(false)}
+        />
+      )}
     </div>
   );
-}
+};
 
-export default Dashboard;
+export default DashboardPage;

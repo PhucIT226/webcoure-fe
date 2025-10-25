@@ -4,6 +4,7 @@ import type {
   LogoutRes,
   RegisterForm,
   RegisterRes,
+  VerifyEmailRes,
 } from "../types/auth";
 import axios from "../services/axiosClient";
 
@@ -18,6 +19,12 @@ export const authService = {
   },
   async signout(): Promise<LogoutRes> {
     const res = await axios.post<LogoutRes>("auth/logout");
+    return res.data;
+  },
+  async verifyEmail(token: string): Promise<VerifyEmailRes> {
+    const res = await axios.get<VerifyEmailRes>(
+      `auth/verify-email?token=${token}`
+    );
     return res.data;
   },
 };

@@ -14,10 +14,18 @@ export default function CourseList() {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [sortField, setSortField] = useState<string>("createdAt");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
-    dispatch(fetchCourses({ page, pageSize: 15, search }));
-  }, [dispatch, page, search]);
+    dispatch(fetchCourses({
+      page, 
+      pageSize: 15, 
+      search, 
+      sortField, 
+      sortOrder 
+    }));
+  }, [dispatch, page, search, sortField, sortOrder]);
 
   const handleDelete = (id: string) => {
     if (confirm("Bạn có chắc muốn xóa khóa học này?")) {
@@ -28,6 +36,21 @@ export default function CourseList() {
   const handleSearch = () => {
     setPage(1);
     setSearch(searchInput);
+  };
+
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+    setPage(1);
+  };
+
+  const renderSortIcon = (field: string) => {
+    if (sortField !== field) return null;
+    return sortOrder === "asc" ? "↑" : "↓";
   };
 
   return (
@@ -42,11 +65,14 @@ export default function CourseList() {
               placeholder="Tìm khóa học..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="border bg-white px-3 py-2 rounded-md text-sm text-black"
+              className="border bg-base-100 px-3 py-2 rounded-md text-sm text-base-content"
             />
             <button
               onClick={handleSearch}
-              className="btn-gradient btn-gradient:hover text-white px-4 py-2 rounded-md text-sm"
+              className="
+                bg-gradient-to-r from-indigo-500 to-purple-500 
+                hover:from-indigo-600 hover:to-purple-600
+                text-white px-4 py-2 rounded-md text-sm"
             >
               Tìm kiếm
             </button>
@@ -58,7 +84,7 @@ export default function CourseList() {
       <div className="mb-4">
         <button
           onClick={() => navigate("/admin/courses/create")}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm"
+          className="bg-green-600 hover:bg-green-700 text-lg text-white px-4 py-2 rounded-md text-sm"
         >
           Thêm khóa học
         </button>
@@ -74,12 +100,42 @@ export default function CourseList() {
           <thead className="whitespace-nowrap bg-gray-100 text-gray-700 uppercase">
             <tr>
               <th className="border text-center px-4 py-3">STT</th>
-              <th className="border text-center px-4 py-3">Tên</th>
-              <th className="border text-center px-4 py-3">Giảng viên</th>
-              <th className="border text-center px-4 py-3">Giá</th>
-              <th className="border text-center px-4 py-3">Học viên</th>
-              <th className="border text-center px-4 py-3">Trạng thái</th>
-              <th className="border text-center px-4 py-3">Ngày tạo</th>
+              <th
+                className="border text-center px-4 py-3 cursor-pointer"
+                onClick={() => handleSort("title")}
+              >
+                Tên {renderSortIcon("title")}
+              </th>
+              <th
+                className="border text-center px-4 py-3 cursor-pointer"
+                onClick={() => handleSort("instructor")}
+              >
+                Giảng viên {renderSortIcon("instructor")}
+              </th>
+              <th
+                className="border text-center px-4 py-3 cursor-pointer"
+                onClick={() => handleSort("price")}
+              >
+                Giá {renderSortIcon("price")}
+              </th>
+              <th
+                className="border text-center px-4 py-3 cursor-pointer"
+                onClick={() => handleSort("studentCount")}
+              >
+                Học viên {renderSortIcon("studentCount")}
+              </th>
+              <th
+                className="border text-center px-4 py-3 cursor-pointer"
+                onClick={() => handleSort("status")}
+              >
+                Trạng thái {renderSortIcon("status")}
+              </th>
+              <th
+                className="border text-center px-4 py-3 cursor-pointer"
+                onClick={() => handleSort("createdAt")}
+              >
+                Ngày tạo {renderSortIcon("createdAt")}
+              </th>
               <th className="border text-center px-4 py-3">Hành động</th>
             </tr>
           </thead>
@@ -88,7 +144,7 @@ export default function CourseList() {
               courses.map((course: Course, index: number) => (
                 <tr
                   key={course.id}
-                  className="border-b whitespace-nowrap hover:bg-gray-50 transition-colors"
+                  className="border-b whitespace-nowrap hover:bg-amber-700 transition-colors"
                 >
                   <td className="border text-center px-4 py-2">
                     {(page - 1) * (pagination?.pageSize ?? 15) + index + 1}
@@ -117,9 +173,11 @@ export default function CourseList() {
                   <td className="border text-center px-4 py-2">
                     {new Date(course.createdAt || "").toLocaleDateString("vi-VN")}
                   </td>
-                  <td className="border px-4 py-2 text-right flex gap-2 justify-end">
+                  <td className="border px-4 py-2 text-center flex gap-2 justify-center">
                     <button
-                      onClick={() => navigate(`/admin/course/${course.id}`, { state: { course } })}
+                      onClick={() =>
+                        navigate(`/admin/courses/${course.id}`, { state: { course } })
+                      }
                       className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                     >
                       Chi tiết

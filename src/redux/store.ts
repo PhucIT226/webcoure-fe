@@ -1,13 +1,20 @@
 import { persistReducer } from "redux-persist";
 import { configureStore } from "@reduxjs/toolkit";
+import profileSlice from "./profileSlice";
 import courseSlice from "./courseSlice";
 import userSlice from "./userSlice";
 import authSlice from "./authSlice";
+import dashboardSlice from "./dashboardSlice";
 import categorySlice from "./categorySlice";
 import orderSlice from "./orderSlice";
+import cartSlice from "./cartSlice";
+import chatSlice from "./chatSlice";
+import reviewSlice from "./reviewSlice";
+import couponSlice from "./couponSlice";
+import lessonSlice from "./lessonSlice";
+import paymentSlice from "./paymentSlice";
 import persistStore from "redux-persist/es/persistStore";
 import storage from "redux-persist/lib/storage";
-// import userSlice from "./userSlice";
 
 const persistConfig = {
   key: "root",
@@ -17,13 +24,19 @@ const persistedReducer = persistReducer(persistConfig, authSlice);
 
 export const store = configureStore({
   reducer: {
-    // product: productSlice,
+    profile: profileSlice,
     auth: persistedReducer,
-    // users: userSlice,
+    dashboard: dashboardSlice,
     course: courseSlice,
     user: userSlice,
     category: categorySlice,
     order: orderSlice,
+    review: reviewSlice,
+    coupon: couponSlice,
+    lesson: lessonSlice,
+    payment: paymentSlice,
+    cart: cartSlice,
+    chat: chatSlice,
   },
 });
 export const persitor = persistStore(store);

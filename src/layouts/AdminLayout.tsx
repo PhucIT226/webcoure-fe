@@ -1,23 +1,19 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, useRef, type ReactNode } from "react";
+import axios from "../services/axiosClient";
 import {
   FaBars,
-  FaThLarge,
   FaUser,
-  FaUserTie,
+  FaThLarge,
   FaGraduationCap,
-  FaRegBell,
-  FaRegCommentDots,
   FaTags,
   FaGift,
-  FaUserCog,
   FaStarHalfAlt,
   FaCreditCard,
 } from "react-icons/fa";
-import ThemeToggle from "../components/admin/ThemeToggle";
-import { Link, useLocation } from "react-router-dom";
+import { IoMdSettings } from "react-icons/io";
+import { Link, useLocation, useNavigate  } from "react-router-dom"; 
 import type { Menu } from "../types/menu";
 import type { TAny } from "../types/common";
-import SearchBar from "../components/admin/SearchBar";
 
 type AdminLayoutProps = {
   children: ReactNode;
@@ -26,75 +22,51 @@ type AdminLayoutProps = {
 type MenuType = Menu[];
 
 const menu: MenuType = [
-  {
-    label: "Dashboard",
-    to: "",
-    icon: FaThLarge,
-    defaultColor: "text-gray-600",
-    badge: 4,
-  },
-  {
-    label: "Khóa học",
-    to: "courses",
-    icon: FaGraduationCap,
-    defaultColor: "text-blue-600",
-    children: [],
-  },
-  {
-    label: "Học viên",
-    to: "student-list",
-    icon: FaUser,
-    defaultColor: "text-green-600",
-    children: [],
-  },
-  {
-    label: "Giảng viên",
-    to: "instructor-list",
-    icon: FaUserTie,
-    defaultColor: "text-purple-600",
-    children: [],
-  },
-  {
-    label: "Danh mục",
-    to: "category-list",
-    icon: FaTags,
-    defaultColor: "text-pink-500",
-    children: [],
-  },
-  {
-    label: "Đơn hàng",
-    to: "order-list",
-    icon: FaCreditCard,
-    defaultColor: "text-orange-500",
-    children: [],
-  },
-  {
-    label: "Đánh giá",
-    to: "review-list",
-    icon: FaStarHalfAlt,
-    defaultColor: "text-yellow-500",
-    children: [],
-  },
-  {
-    label: "Voucher",
-    to: "coupon-list",
-    icon: FaGift,
-    defaultColor: "text-red-500",
-    children: [],
-  },
-  {
-    label: "Cài đặt",
-    to: "profile",
-    icon: FaUserCog,
-    defaultColor: "text-gray-500",
-    children: [],
-  },
+  { label: "Dashboard", to: "", icon: FaThLarge, defaultColor: "text-blue-600", badge: 4 },
+  { label: "Người dùng", to: "users", icon: FaUser, defaultColor: "text-green-600", children: [] },
+  { label: "Khóa học", to: "courses", icon: FaGraduationCap, defaultColor: "text-purple-600", children: [] },
+  { label: "Danh mục", to: "categories", icon: FaTags, defaultColor: "text-pink-500", children: [] },
+  { label: "Đơn hàng", to: "orders", icon: FaCreditCard, defaultColor: "text-orange-500", children: [] },
+  { label: "Đánh giá", to: "reviews", icon: FaStarHalfAlt, defaultColor: "text-yellow-500", children: [] },
+  { label: "Voucher", to: "coupons", icon: FaGift, defaultColor: "text-red-500", children: [] },
 ];
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [menus, setMenus] = useState(menu);
   const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const q = searchQuery.trim();
+    if (q === "") {
+      setSuggestions([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        setLoadingSearch(true);
+        const res = await axios.get(`/admin/search?query=${encodeURIComponent(q)}`);
+        setSuggestions(res.data || []);
+      } catch (err) {
+        console.error("❌ Lỗi khi fetch search:", err);
+      } finally {
+        setLoadingSearch(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const handleSelect = (item: any) => {
+    setSuggestions([]);
+    navigate(`/admin/${item.type.toLowerCase()}s/${item.id}`);
+  };
 
   useEffect(() => {
     setMenus((prevMenus: TAny) =>
@@ -120,12 +92,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 px-6 py-6 border-b border-gray-100"
+          className="flex items-center justify-center py-6 border-b border-gray-100"
         >
           <img
-            src="https://phpstack-1384472-5196432.cloudwaysapps.com/assets/images/logo/1.png"
+            src="/logo.png"
             alt="Logo"
-            className="h-8"
+            className="h-22 w-auto -my-6 object-contain"
           />
         </Link>
 
@@ -138,10 +110,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 <li key={item.label}>
                   <Link
                     to={item.to}
-                    className={`flex items-center px-4 py-2 rounded-lg cursor-pointer group ${
+                    className={`flex items-center text-lg px-4 py-4 rounded-lg cursor-pointer group ${
                       item.active
-                        ? "bg-[#eff6ff] text-[#2563eb] font-semibold"
-                        : "text-gray-700 hover:bg-[#dbeafe] hover:text-[#2563eb]"
+                        ? "bg-base-100 text-[#2563eb] font-semibold"
+                        : "bg-base-100 hover:bg-[#dbeafe] hover:text-[#2563eb]"
                     }`}
                   >
                     <Icon
@@ -168,7 +140,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                           key={sub.label}
                           className={`px-3 py-1 rounded cursor-pointer text-sm ${
                             sub.active
-                              ? "bg-[#eff6ff] text-[#2563eb] font-semibold"
+                              ? "bg-base-100 text-[#2563eb] font-semibold"
                               : "text-gray-600 hover:bg-[#dbeafe] hover:text-[#2563eb]"
                           }`}
                         >
@@ -193,45 +165,56 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       >
         {/* Header */}
         <header
-          className="fixed top-0 left-0 right-0 h-16 bg-white shadow z-20 flex items-center justify-between px-6 transition-all duration-200"
+          className="fixed top-0 left-0 right-0 h-16 bg-base-100 shadow z-20 flex items-center justify-between px-6 transition-all duration-200"
           style={{
             left: sidebarOpen ? "16rem" : "5rem",
             width: sidebarOpen ? "calc(100% - 16rem)" : "calc(100% - 5rem)",
           }}
         >
+          {/* Left: Sidebar toggle */}
           <div className="flex items-center gap-4">
             <button
-              className="text-2xl text-gray-600"
+              className="text-2xl bg-base-100"
               onClick={() => setSidebarOpen((v) => !v)}
             >
               <FaBars />
             </button>
-            <SearchBar placeholder="Tìm kiếm..." />
           </div>
-          <div className="flex items-center gap-4">
-            <FaRegBell className="text-gray-400 text-lg cursor-pointer" />
-            <ThemeToggle />
-            <img
-              src="https://flagcdn.com/us.svg"
-              alt="US"
-              className="w-6 h-6 rounded-full border"
+
+          <div className="relative w-64">
+            <input
+              type="text"
+              placeholder="Tìm kiếm..."
+              className="border rounded-lg px-3 py-1 w-full focus:outline-none focus:ring focus:ring-blue-300"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
             />
-            <FaRegCommentDots className="text-gray-400 text-lg cursor-pointer" />
-            <Link to="profile">
-              <img
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="User"
-                className="w-8 h-8 rounded-full border-2 border-blue-200"
-              />
+            {searchQuery && suggestions.length > 0 && (
+              <div ref={dropdownRef} className="absolute top-full left-0 w-full bg-base-100 border shadow-lg z-50 max-h-60 overflow-auto">
+                {loadingSearch ? (
+                  <p className="p-2 text-gray-500">Đang tìm...</p>
+                ) : suggestions.map(item => (
+                  <div key={item.type + item.id} className="p-2 cursor-pointer hover:bg-blue-100" onClick={() => handleSelect(item)}>
+                    <span className="font-semibold">{item.name || item.title || item.email}</span> <span className="text-gray-500 text-sm">({item.type})</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Right: Settings */}
+          <div className="flex items-center gap-4">
+            <Link to="setting">
+              <IoMdSettings className="text-2xl" />
             </Link>
           </div>
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-6 pt-20 bg-[#f9fafb]">{children}</main>
+        <main className="flex-1 p-6 pt-20 bg-base-100">{children}</main>
 
         {/* Footer */}
-        <footer className="bg-white text-center py-3 text-gray-500 text-sm shadow-inner mt-auto">
+        <footer className="bg-base-100 text-center py-3 text-base-content text-sm shadow-inner -mt-10">
           Copyright © {new Date().getFullYear()} Axelit.{" "}
           <span className="text-pink-400 mx-1">♥</span> v1.0.0
         </footer>

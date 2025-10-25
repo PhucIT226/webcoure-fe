@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import type { RegisterForm } from "../types/auth";
 import { authService } from "../services/authService";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
   name: yup.string().required("Họ tên là bắt buộc"),
@@ -31,7 +32,8 @@ const Register = () => {
 
   const onSubmit = async (data: RegisterForm) => {
     await authService.signup(data);
-    navigate("/login");
+    toast.success("Đăng kí thành công,vui lòng kiểm tra mail để xác nhận");
+    navigate("/checkmail", { state: { email: data } });
   };
 
   return (

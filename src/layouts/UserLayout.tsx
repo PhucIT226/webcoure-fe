@@ -11,18 +11,25 @@ type UserLayoutProps = {
 const UserLayout: React.FC<UserLayoutProps> = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const isCourseVid = location.pathname.startsWith("/coursevid");
+
   return (
     <>
-      <div className="header-container">
-        <Header />
-      </div>
+      {!isCourseVid && (
+        <div className="header-container">
+          <Header />
+        </div>
+      )}
+
       <div className="swiper-container mb-5">{isHome && <Slider />}</div>
       <main>
         <Outlet />
       </main>
-      <div className="footer-container">
-        <Footer />
-      </div>
+      {!isCourseVid && (
+        <div className="footer-container">
+          <Footer />
+        </div>
+      )}
     </>
   );
 };

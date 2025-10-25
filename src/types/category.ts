@@ -4,8 +4,9 @@ export type Category = {
   id?: string;
   name: string;
   slug: string;
+  courseCount?: number;
   description?: string;
-  status: "active" | "inactive";
+  status: "active" | "hidden";
   createdAt?: string;
   updatedAt?: string;
 };

@@ -8,18 +8,31 @@ const OrderService = {
   },
 
   async getById(id: string): Promise<Order> {
-    const res = await axios.get<Order>(`/orders/${id}`);
-    return res.data;
+    const res = await axios.get(`/orders/${id}`);
+    return res.data.data;
   },
 
   async create(order: Partial<Order>): Promise<Order> {
-    const res = await axios.post<Order>("/orders", order);
-    return res.data;
+    const res = await axios.post<{ status: boolean; message: string; data: Order }>(
+      "/orders",
+      order,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return res.data.data;
   },
 
   async update(id: string, order: Partial<Order>): Promise<Order> {
-    const res = await axios.put<Order>(`/orders/${id}`, order);
-    return res.data;
+    const res = await axios.patch<{ status: boolean; message: string; data: Order }>(
+      `/orders/${id}`,
+      order,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    return res.data.data;
   },
 
   async delete(id: string): Promise<void> {

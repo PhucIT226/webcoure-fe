@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import CourseForm from "./course-form";
+import CourseForm from "../../../components/admin/courses/CourseForm";
 import CourseService from "../../../services/courseService";
 import type { Course } from "../../../types/course";
 
@@ -36,8 +36,8 @@ export default function CourseEdit() {
   if (!course) return <p className="p-6 text-gray-600">Đang tải dữ liệu...</p>;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white rounded-lg shadow">
-      <h1 className="text-2xl font-bold mb-4">Chỉnh sửa khóa học</h1>
+    <div className="p-6 max-w-2xl mx-auto bg-base-100 rounded-lg shadow">
+      <h1 className="text-3xl text-center font-extrabold text-indigo-600 tracking-wide mb-4">Chỉnh sửa khóa học</h1>
       <CourseForm initialData={course} onSubmit={handleUpdate} />
     </div>
   );

@@ -1,18 +1,18 @@
-import type { Pagination } from "./common";
-
-export type OrderStatus = "pending" | "paid" | "cancelled" | "refunded";
-export type PaymentStatus = "unpaid" | "paid" | "failed" | "refunded";
-export type PaymentMethod = "credit_card" | "paypal" | "bank" | "momo" | "zalopay";
-export type AccessStatus = "active" | "expired" | "revoked";
+import type { Image, Pagination } from "./common";
 
 export type OrderItem = {
   id?: string;
   orderId?: string;
   courseId: string;
+  course?: {
+    id: string;
+    title: string;
+    thumbnailUrls?: Image[];
+  };
   price: number;
   discount?: number;
   finalPrice?: number;
-  accessStatus?: AccessStatus;
+  accessStatus?: "active" | "expired" | "revoked";
   createdAt?: string;
   updatedAt?: string;
 };
@@ -20,12 +20,16 @@ export type OrderItem = {
 export type Order = {
   id?: string;
   userId?: string;
-  user?: { id: string; name: string };
+  user?: {
+    id: string;
+    name: string;
+    email?: string;
+  };
   couponId?: string | null;
   totalAmount: number;
-  status: OrderStatus;
-  paymentMethod?: PaymentMethod | null;
-  paymentStatus?: PaymentStatus;
+  status: "pending" | "paid" | "cancelled" | "refunded";
+  paymentMethod?: "credit_card" | "paypal" | "bank" | "momo" | "zalopay" | null;
+  paymentStatus?: "unpaid" | "paid" | "failed" | "refunded";
   note?: string | null;
   createdAt?: string;
   updatedAt?: string;

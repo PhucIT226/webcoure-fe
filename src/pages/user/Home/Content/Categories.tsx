@@ -1,63 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../../../styles/user/home/Categories.scss";
+import { useAppDispatch } from "../../../../hooks";
+import { fetchCategories } from "../../../../redux/categorySlice";
+import { fetchCourses } from "../../../../redux/courseSlice";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../../redux/store";
+import type { TAny } from "../../../../types/common";
+import { useNavigate } from "react-router-dom";
 
 const Categories = () => {
-  <img src="" alt="" />;
-  const categories = [
-    {
-      id: 1,
-      name: "Data Science",
-      courses: [
-        {
-          id: 101,
-          title: "Python for Data Science",
-          author: "John Doe",
-          price: 309000,
-          oldPrice: 1379000,
-          rating: 4.5,
-          learners: "119,987",
-          image: "/python.jpg",
-        },
-        {
-          id: 102,
-          title: "Machine Learning Basics",
-          author: "Jane Smith",
-          price: 279000,
-          oldPrice: 399000,
-          rating: 4.3,
-          learners: "91,313",
-          image: "/machine.jpg",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Web Development",
-      courses: [
-        {
-          id: 201,
-          title: "React for Beginners",
-          author: "Alice Nguyen",
-          price: 309000,
-          oldPrice: 1179000,
-          rating: 4.6,
-          learners: "26,639",
-          image: "/reacttutor.jpg",
-        },
-        {
-          id: 202,
-          title: "Node.js & Express",
-          author: "David Lee",
-          price: 459000,
-          oldPrice: 1779000,
-          rating: 4.7,
-          learners: "35,195",
-          image: "/nodejsexpress.jpg",
-        },
-      ],
-    },
-  ];
-  const [activeCategory, setActiveCategory] = useState(categories[0]);
+  const dispatch = useAppDispatch();
+
+  const categories = useSelector((state: RootState) => state.category.data);
+  const courses = useSelector((state: RootState) => state.course.data);
+  const navigate = useNavigate();
+
+  const [activeCategory, setActiveCategory] = useState<TAny>(null);
+
+  // 🟢 Lấy dữ liệu ban đầu
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchCourses());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (categories.length > 0 && activeCategory === null) {
+      setActiveCategory(categories[0].id);
+    }
+  }, [categories, activeCategory]);
+
+  // 🟢 Lọc courses theo category đang chọn
+  const filteredCourses = courses.filter(
+    (course) => course.categoryId === activeCategory
+  );
 
   return (
     <div className="container mx-auto">
@@ -69,12 +44,16 @@ const Categories = () => {
       </p>
 
       {/* Thanh danh mục */}
-      <div className="categories mb-4">
+      <div className="categories mb-4 flex gap-2 flex-wrap">
         {categories.map((cat) => (
           <button
             key={cat.id}
-            className={cat.id === activeCategory.id ? "active" : ""}
-            onClick={() => setActiveCategory(cat)}
+            className={`px-4 py-2 rounded ${
+              activeCategory === cat.id
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-black"
+            }`}
+            onClick={() => setActiveCategory(cat.id)}
           >
             {cat.name}
           </button>
@@ -82,25 +61,40 @@ const Categories = () => {
       </div>
 
       {/* List khóa học */}
-      <div className="courses">
-        {activeCategory.courses.map((course) => (
-          <div className="course-card" key={course.id}>
-            <img src={course.image} alt={course.title} />
-            <h3>{course.title}</h3>
-            <p>{course.author}</p>
-            <p>
-              ⭐ {course.rating} ({course.learners} learners)
-            </p>
-            <p>
-              <b>{course.price.toLocaleString()} ₫</b>{" "}
-              <span className="old-price">
-                {course.oldPrice.toLocaleString()} ₫
-              </span>
-            </p>
-          </div>
-        ))}
+      <div className="courses grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredCourses.length === 0 ? (
+          <b>No courses in this category yet.</b>
+        ) : (
+          filteredCourses.map((course) => (
+            <div
+              className="course-card border rounded-lg p-3 hover:shadow-lg transition cursor-pointer"
+              key={course.id}
+              onClick={() =>
+                navigate(`/course/${course.id}`, {
+                  state: {
+                    courseTitle: course.title,
+                    courseDes: course.description,
+                    courseId: course.id,
+                    coursePrice: course.price,
+                  },
+                })
+              }
+            >
+              {course.thumbnailUrls?.[0] && (
+                <img
+                  src={course.thumbnailUrls[0].url}
+                  alt={course.title}
+                  className="w-full h-40 object-cover rounded"
+                />
+              )}
+              <h3 className="font-semibold mt-2">{course.title}</h3>
+              <p className="mt-1">{course.price?.toLocaleString?.() || 0} ₫ </p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 };
+
 export default Categories;

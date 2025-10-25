@@ -1,54 +1,150 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/user/Home/Home";
-import Login from "./Auth/login";
-import Register from "./Auth/register";
 
-import Admin from "./pages/admin/admin";
-import Dashboard from "./pages/admin/dashboard/dashboard";
-// import CourseList from "./pages/admin/courses/course-list";
-import CourseDetail from "./components/admin/CourseDetail";
-import UserList from "./pages/admin/users/user-list";
-import InstructorList from "./pages/admin/instructors/instructor-list";
-import CategoryList from "./pages/admin/categories/category-list";
-import CategoryDetail from "./components/admin/CategoryDetail";
-import OrderList from "./pages/admin/orders/order-list";
-import ReviewList from "./pages/admin/reviews/review-list";
-import CouponList from "./pages/admin/coupons/coupon-list";
-import Profile from "./pages/admin/setting/profile";
+// Protected routes
+import { ProtectedRoute } from "./components/admin/ProtectedRoute";
+// import { PublicRoute } from "./components/admin/PublicRoute";
+
+// User pages
 import User from "./pages/user/user";
+import Home from "./pages/user/Home/Home";
 import DetailCourse from "./pages/user/Home/Content/DetailCourse";
 import CourseVid from "./pages/user/Home/Content/CourseVid";
 import SearchCourses from "./pages/user/Home/Header/SearchCourse";
+import Login from "./Auth/login";
+import Register from "./Auth/register";
+import { Bounce, ToastContainer } from "react-toastify";
+import PaymentPage from "./pages/user/Payment/PaymentPage";
+import UserProfile from "./pages/user/Home/Header/UserProfile";
+
+// Admin pages
+import Admin from "./pages/admin/admin";
+import Dashboard from "./pages/admin/dashboard/dashboard";
+import Search from "./components/admin/search/search";
+import CourseList from "./pages/admin/courses/courses";
+import CourseDetail from "./components/admin/courses/CourseDetail";
+import CourseCreate from "./pages/admin/courses/Course-create";
+import CourseEdit from "./pages/admin/courses/Course-edit";
+import UserList from "./pages/admin/users/users";
+import UserDetail from "./components/admin/users/UserDetail";
+import UserCreate from "./pages/admin/users/user-create";
+import UserEdit from "./pages/admin/users/user-edit";
+import CategoryList from "./pages/admin/categories/categories";
+import CategoryDetail from "./components/admin/categories/CategoryDetail";
+import CategoryCreate from "./pages/admin/categories/category-create";
+import CategoryEdit from "./pages/admin/categories/category-edit";
+import OrderList from "./pages/admin/orders/orders";
+import OrderDetail from "./components/admin/orders/OrderDetail";
+import OrderEdit from "./pages/admin/orders/order-edit";
+import ReviewList from "./pages/admin/reviews/reviews";
+import ReviewDetail from "./components/admin/reviews/ReviewDetail";
+import CouponList from "./pages/admin/coupons/coupons";
+import CouponDetail from "./components/admin/coupons/CouponDetail";
+import CouponCreate from "./pages/admin/coupons/coupon-create";
+import CouponEdit from "./pages/admin/coupons/coupon-edit";
+import Setting from "./pages/admin/setting/setting";
+import VerifyEmail from "./pages/user/Email/verifyEmail";
+import CheckEmail from "./pages/user/Email/checkEmail";
 
 function App() {
   return (
-    <Routes>
-      {/* User */}
-      <Route path="/" element={<User />}>
-        <Route index element={<Home />} />
-        <Route path="/course/:id" element={<DetailCourse />} />
-      </Route>
+    <>
+      <Routes>
+        {/* User routes */}
+        <Route path="/" element={<User />}>
+          <Route index element={<Home />} />
+          <Route path="/course/:id" element={<DetailCourse />} />
+          <Route path="/coursevid/:id" element={<CourseVid />} />
+          <Route path="/coursesfound" element={<SearchCourses />} />
+        </Route>
 
-      {/* Admin */}
-      <Route path="/admin" element={<Admin />}>
-        <Route index element={<Dashboard />} />
-        {/* <Route path="course-list" element={<CourseList />} /> */}
-        <Route path="course/:id" element={<CourseDetail />} />
-        <Route path="student-list" element={<UserList />} />
-        <Route path="user-list" element={<UserList />} />
-        <Route path="instructor-list" element={<InstructorList />} />
-        <Route path="category-list" element={<CategoryList />} />
-        <Route path="category/:id" element={<CategoryDetail />} />
-        <Route path="order-list" element={<OrderList />} />
-        <Route path="review-list" element={<ReviewList />} />
-        <Route path="coupon-list" element={<CouponList />} />
-        <Route path="profile" element={<Profile />} />
-      </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/coursevid" element={<CourseVid />} />
-      <Route path="/coursesfound" element={<SearchCourses />} />
-    </Routes>
+        {/* Admin routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<Admin />}>
+            <Route index element={<Dashboard />} />
+
+            <Route path="search" element={<Search />} />
+
+            {/* Course routes */}
+            <Route path="courses">
+              <Route index element={<CourseList />} />
+              <Route path="create" element={<CourseCreate />} />
+              <Route path=":id" element={<CourseDetail />} />
+              <Route path=":id/edit" element={<CourseEdit />} />
+            </Route>
+
+            {/* User routes */}
+            <Route path="users">
+              <Route index element={<UserList />} />
+              <Route path="create" element={<UserCreate />} />
+              <Route path=":id" element={<UserDetail />} />
+              <Route path=":id/edit" element={<UserEdit />} />
+            </Route>
+
+            {/* Category routes */}
+            <Route path="categories">
+              <Route index element={<CategoryList />} />
+              <Route path="create" element={<CategoryCreate />} />
+              <Route path=":id" element={<CategoryDetail />} />
+              <Route path=":id/edit" element={<CategoryEdit />} />
+            </Route>
+
+            {/* Order routes */}
+            <Route path="orders">
+              <Route index element={<OrderList />} />
+              <Route path=":id" element={<OrderDetail />} />
+              <Route path=":id/edit" element={<OrderEdit />} />
+            </Route>
+
+            {/* Review routes */}
+            <Route path="reviews">
+              <Route index element={<ReviewList />} />
+              <Route path=":id" element={<ReviewDetail />} />
+            </Route>
+
+            {/* Coupon routes */}
+            <Route path="coupons">
+              <Route index element={<CouponList />} />
+              <Route path="create" element={<CouponCreate />} />
+              <Route path=":id" element={<CouponDetail />} />
+              <Route path=":id/edit" element={<CouponEdit />} />
+            </Route>
+
+            {/* Setting routes */}
+            <Route path="setting">
+              <Route index element={<Setting />} />
+              <Route path="create" element={<CouponCreate />} />
+              <Route path=":id" element={<CouponDetail />} />
+              <Route path=":id/edit" element={<CouponEdit />} />
+            </Route>
+          </Route>
+        </Route>
+        {/* 
+        <Route element={<PublicRoute />}>
+          
+        </Route> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/payment/:id" element={<PaymentPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/profile/:id" element={<UserProfile />} />
+        <Route path="auth/verify-email/:token" element={<VerifyEmail />} />
+        <Route path="/checkmail" element={<CheckEmail />} />
+      </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
+    </>
   );
 }
 

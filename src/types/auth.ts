@@ -2,6 +2,7 @@ export type UserRes = {
   email: string;
   id: string;
   name: string;
+  roleId: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -22,7 +23,6 @@ export type LogoutRes = {
   message: string;
 };
 
-
 export interface RegisterForm {
   name: string;
   email: string;
@@ -33,3 +33,7 @@ export interface RegisterForm {
 export interface RegisterRes {
   message: string;
 }
+export type VerifyEmailRes = {
+  message: string;
+  success: boolean;
+};

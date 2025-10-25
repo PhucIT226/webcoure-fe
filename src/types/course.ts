@@ -5,13 +5,22 @@ export type Course = {
   title: string;
   slug: string;
   description?: string;
-  instructor: {name: string};
-  category: { name: string };
+  shortDescription?: string;
+  instructor: { id?: string; name: string };
+  instructorId?: string;
+  category: { id?: string; name: string };
+  categoryId: string;
+  lessons?: {
+    id: string;
+    title: string;
+    order?: number;
+  }[];
   price: number;
   studentCount?: number;
   createdAt?: string;
   updatedAt?: string;
   status: "published" | "draft" | "closed";
+  thumbnailUrl?: string;
   thumbnailUrls?: Image[];
 };
 

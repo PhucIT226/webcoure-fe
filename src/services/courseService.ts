@@ -2,31 +2,35 @@ import axios from "./axiosClient";
 import type { Course, CourseResDto, GetAllCourseParams } from "../types/course";
 
 const CourseService = {
+  // Lấy danh sách khóa học (có phân trang, tìm kiếm, sắp xếp)
   async getAll(params?: GetAllCourseParams): Promise<CourseResDto> {
     const res = await axios.get<CourseResDto>("/courses", { params });
     return res.data;
   },
 
+  // Lấy chi tiết khóa học theo ID
   async getById(id: string): Promise<Course> {
-    const res = await axios.get<Course>(`/courses/${id}`);
-    return res.data;
+    const res = await axios.get(`/courses/${id}`);
+    return res.data.data;
   },
 
+  // Tạo khóa học mới
   async create(course: Partial<Course>, files?: File[]): Promise<Course> {
     const formData = new FormData();
 
-    // Thêm dữ liệu text
+    // ✅ Append dữ liệu text
     Object.entries(course).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, String(value));
       }
     });
 
-    // Thêm file (nếu có)
+    // ✅ Thêm file thumbnail (nếu có)
     if (files && files.length > 0) {
-      files.forEach((file) => formData.append("files", file));
+      formData.append("thumbnail", files[0]); // key phải trùng với backend multer.single("thumbnail")
     }
 
+    // ✅ Gửi request
     const res = await axios.post<Course>("/courses", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -34,7 +38,12 @@ const CourseService = {
     return res.data;
   },
 
-  async update(id: string, course: Partial<Course>, files?: File[]): Promise<Course> {
+  // Cập nhật khóa học
+  async update(
+    id: string,
+    course: Partial<Course>,
+    files?: File[]
+  ): Promise<Course> {
     const formData = new FormData();
 
     Object.entries(course).forEach(([key, value]) => {
@@ -43,19 +52,37 @@ const CourseService = {
       }
     });
 
+    // ✅ Nếu có ảnh mới thì thêm thumbnail
     if (files && files.length > 0) {
-      files.forEach((file) => formData.append("files", file));
+      formData.append("thumbnail", files[0]);
     }
 
-    const res = await axios.patch<Course>(`/courses/${id}`, formData, {
+    const res = await axios.patch<{
+      status: boolean;
+      message: string;
+      data: Course;
+    }>(`/courses/${id}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
+    return res.data.data;
+  },
+
+  // Xóa khóa học
+  async delete(id: string): Promise<void> {
+    await axios.delete(`/courses/${id}`);
+  },
+
+  // ✅ Lấy danh mục (để hiển thị trong select box)
+  async getCategories() {
+    const res = await axios.get("/categories");
     return res.data;
   },
 
-  async delete(id: string): Promise<void> {
-    await axios.delete(`/courses/${id}`);
+  // ✅ Lấy danh sách giảng viên
+  async getInstructors() {
+    const res = await axios.get("/users?role=instructor");
+    return res.data;
   },
 };
 
