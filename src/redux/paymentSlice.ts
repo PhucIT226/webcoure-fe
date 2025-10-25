@@ -9,7 +9,7 @@ interface PaymentState {
   error: string | null;
 }
 
-interface PaymentPayload {
+export interface PaymentPayload {
   courseId: string | string[];
   userId: string;
   orderId?: string;

@@ -19,9 +19,11 @@ export default function CourseDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const [course, setCourse] = useState<Course | null>(location.state?.course || null);
+  const [course, setCourse] = useState<Course | null>(
+    location.state?.course || null
+  );
   const [lessonsOpen, setLessonsOpen] = useState(false);
-  const [loading, setLoading] = useState(!location.state?.course)
+  const [loading, setLoading] = useState(!location.state?.course);
 
   useEffect(() => {
     if (id) {
@@ -76,7 +78,9 @@ export default function CourseDetail() {
       <div className="p-8 rounded-3xl shadow-xl space-y-8 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
         {/* Title & slug */}
         <div>
-          <h2 className="text-4xl font-bold text-gray-800 mb-1">{course.title}</h2>
+          <h2 className="text-4xl font-bold text-gray-800 mb-1">
+            {course.title}
+          </h2>
           <p className="text-sm text-indigo-500 italic">/{course.slug}</p>
         </div>
 
@@ -103,7 +107,10 @@ export default function CourseDetail() {
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaMoneyBillAlt className="mr-3 text-green-500 text-lg" />
-              Giá: <span className="text-xl font-bold">{Number(course.price).toLocaleString("vi-VN")} đ</span>
+              Giá:{" "}
+              <span className="text-xl font-bold">
+                {Number(course.price).toLocaleString("vi-VN")} đ
+              </span>
             </p>
             <p className="flex flex-col text-gray-800 font-medium mt-2">
               <button
@@ -131,14 +138,14 @@ export default function CourseDetail() {
                           };
                           return getNumber(a.title) - getNumber(b.title);
                         })
-                        .map((lesson, idx) => (
-                          <li key={lesson.id}>
-                            {lesson.title}
-                          </li>
+                        .map((lesson) => (
+                          <li key={lesson.id}>{lesson.title}</li>
                         ))}
                     </ul>
                   ) : (
-                    <span className="ml-6 mt-2 text-gray-500">Chưa có bài học</span>
+                    <span className="ml-6 mt-2 text-gray-500">
+                      Chưa có bài học
+                    </span>
                   )}
                 </>
               )}
@@ -168,11 +175,13 @@ export default function CourseDetail() {
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaCalendarAlt className="mr-3 text-indigo-500 text-lg" />
-              Ngày tạo: {new Date(course.createdAt || "").toLocaleDateString("vi-VN")}
+              Ngày tạo:{" "}
+              {new Date(course.createdAt || "").toLocaleDateString("vi-VN")}
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaCalendarAlt className="mr-3 text-purple-500 text-lg" />
-              Cập nhật gần nhất: {new Date(course.updatedAt || "").toLocaleDateString("vi-VN")}
+              Cập nhật gần nhất:{" "}
+              {new Date(course.updatedAt || "").toLocaleDateString("vi-VN")}
             </p>
           </div>
         </div>
@@ -180,7 +189,9 @@ export default function CourseDetail() {
         {/* Thumbnail dạng carousel mini */}
         {!course.thumbnailUrls?.length && course.thumbnailUrl && (
           <div className="mt-6">
-            <p className="font-semibold mb-3 text-gray-800 text-lg">Ảnh khóa học:</p>
+            <p className="font-semibold mb-3 text-gray-800 text-lg">
+              Ảnh khóa học:
+            </p>
             <img
               src={`http://localhost:3000${course.thumbnailUrl}`}
               alt={course.title}

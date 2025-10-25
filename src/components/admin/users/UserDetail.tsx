@@ -105,7 +105,8 @@ export default function UserDetail() {
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaBirthdayCake className="mr-3 text-pink-500 text-lg" />
-              Ngày sinh: {user.profile?.dateOfBirth 
+              Ngày sinh:{" "}
+              {user.profile?.dateOfBirth
                 ? new Date(user.profile.dateOfBirth).toLocaleDateString("vi-VN")
                 : "Chưa cập nhật"}
             </p>
@@ -121,8 +122,10 @@ export default function UserDetail() {
                 </span>
                 {user.enrollments && user.enrollments.length > 0 ? (
                   <ul className="ml-8 list-decimal list-inside">
-                    {user.enrollments.map((enroll, index) => (
-                      <li key={enroll.id}>{enroll.course?.title || "Chưa có tên khóa học"}</li>
+                    {user.enrollments.map((enroll) => (
+                      <li key={enroll.id}>
+                        {enroll.course?.title || "Chưa có tên khóa học"}
+                      </li>
                     ))}
                   </ul>
                 ) : (
@@ -157,11 +160,13 @@ export default function UserDetail() {
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaCalendarAlt className="mr-3 text-indigo-500 text-lg" />
-              Ngày tạo: {new Date(user.createdAt || "").toLocaleDateString("vi-VN")}
+              Ngày tạo:{" "}
+              {new Date(user.createdAt || "").toLocaleDateString("vi-VN")}
             </p>
             <p className="flex items-center text-gray-800 font-medium">
               <FaCalendarAlt className="mr-3 text-purple-500 text-lg" />
-              Cập nhật gần nhất: {new Date(user.updatedAt || "").toLocaleDateString("vi-VN")}
+              Cập nhật gần nhất:{" "}
+              {new Date(user.updatedAt || "").toLocaleDateString("vi-VN")}
             </p>
           </div>
         </div>
@@ -169,7 +174,9 @@ export default function UserDetail() {
         {/* Thumbnail dạng carousel mini */}
         {user.avatarUrls && user.avatarUrls.length > 0 && (
           <div className="mt-6">
-            <p className="font-semibold mb-3 text-gray-800 text-lg">Ảnh đại diện:</p>
+            <p className="font-semibold mb-3 text-gray-800 text-lg">
+              Ảnh đại diện:
+            </p>
             <div className="flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 p-2 rounded-xl">
               {user.avatarUrls.map((img, i) => (
                 <img
