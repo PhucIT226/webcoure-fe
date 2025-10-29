@@ -31,6 +31,7 @@ export type User = {
   status: "active" | "inactive" | "banned" | "pending";
   createdAt?: string;
   updatedAt?: string;
+  avatarUrl?: string;
   avatarUrls?: Image[];
 };
 

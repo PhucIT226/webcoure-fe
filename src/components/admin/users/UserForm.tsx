@@ -18,7 +18,6 @@ export default function UserForm({ initialData, onSubmit }: Props) {
   const [roleId, setRoleId] = useState<string>("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
@@ -41,7 +40,6 @@ export default function UserForm({ initialData, onSubmit }: Props) {
       setRoleId(initialData.roleId || "");
       setName(initialData.name || "");
       setEmail(initialData.email || "");
-      setPassword("");
       setPhone(initialData.profile?.phone || "");
       setAddress(initialData.profile?.address || "");
       setDateOfBirth(initialData.profile?.dateOfBirth || "");
@@ -64,8 +62,6 @@ export default function UserForm({ initialData, onSubmit }: Props) {
     if (!name.trim()) newErrors.name = "Tên không được để trống.";
     if (!email.trim()) newErrors.email = "Email không được để trống.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = "Email không hợp lệ.";
-    if (!initialData && password.trim().length < 6)
-      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
 
     if (phone && !/^\d{9,11}$/.test(phone))
       newErrors.phone = "Số điện thoại chỉ được chứa 9–11 chữ số.";
@@ -90,7 +86,6 @@ export default function UserForm({ initialData, onSubmit }: Props) {
       roleId,
       name: name.trim(),
       email: email.trim(),
-      password: password.trim(),
       profile: {
         phone: phone.trim(),
         address: address.trim(),
@@ -116,10 +111,11 @@ export default function UserForm({ initialData, onSubmit }: Props) {
             .filter((r) => r.name !== "admin")
             .map((r) => (
               <option key={r.id} value={r.id}>
-                {r.name}
+                {r.name === "student" ? "Học viên" : r.name === "instructor" ? "Giảng viên" : r.name}
               </option>
             ))}
         </select>
+
         {errors.roleId && <p className="text-red-500 text-sm mt-1">{errors.roleId}</p>}
       </div>
 
@@ -143,17 +139,6 @@ export default function UserForm({ initialData, onSubmit }: Props) {
           className="border px-3 py-2 rounded w-full"
         />
         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-      </div>
-
-      <div>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={initialData ? "Để trống nếu không đổi" : "Mật khẩu"}
-          className="border px-3 py-2 rounded w-full"
-        />
-        {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
       </div>
 
       {/* Phone */}
@@ -240,7 +225,7 @@ export default function UserForm({ initialData, onSubmit }: Props) {
           type="submit"
           className="bg-green-600 hover:bg-green-700 text-white px-8 py-2 rounded-lg shadow-md font-medium"
         >
-          {initialData ? "Cập nhật khóa học" : "Thêm mới"}
+          {initialData ? "Cập nhật người dùng" : "Thêm mới"}
         </button>
       </div>
     </form>

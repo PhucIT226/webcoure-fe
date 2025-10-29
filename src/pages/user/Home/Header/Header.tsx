@@ -66,7 +66,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full border-b bg-white shadow-sm">
+    <header className="w-full border-b bg-base-100 shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <NavLink to="/" className="text-xl font-semibold text-primary">

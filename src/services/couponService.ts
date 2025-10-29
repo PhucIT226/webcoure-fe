@@ -1,4 +1,4 @@
-import axios from "./axiosClient";
+import axios from "../services/axiosClient";
 import type { Coupon, CouponResDto, GetAllCouponParams } from "../types/coupon";
 
 const CouponService = {

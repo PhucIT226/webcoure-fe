@@ -112,7 +112,7 @@ export default function CourseDetail() {
                 {Number(course.price).toLocaleString("vi-VN")} đ
               </span>
             </p>
-            <p className="flex flex-col text-gray-800 font-medium mt-2">
+            <div className="flex flex-col text-gray-800 font-medium mt-2">
               <button
                 onClick={() => setLessonsOpen(!lessonsOpen)}
                 className="flex items-center focus:outline-none"
@@ -143,13 +143,11 @@ export default function CourseDetail() {
                         ))}
                     </ul>
                   ) : (
-                    <span className="ml-6 mt-2 text-gray-500">
-                      Chưa có bài học
-                    </span>
+                    <span className="ml-6 mt-2 text-gray-500">Chưa có bài học</span>
                   )}
                 </>
               )}
-            </p>
+            </div>
           </div>
 
           {/* Cột phải */}
@@ -193,7 +191,11 @@ export default function CourseDetail() {
               Ảnh khóa học:
             </p>
             <img
-              src={`http://localhost:3000${course.thumbnailUrl}`}
+              src={
+                course.thumbnailUrl.startsWith("http")
+                  ? course.thumbnailUrl
+                  : `http://localhost:3000${course.thumbnailUrl}`
+              }
               alt={course.title}
               className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm"
             />

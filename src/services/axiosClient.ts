@@ -38,8 +38,24 @@ axiosClient.interceptors.response.use(
     return response;
   },
   async (error) => {
+    nProgress.done();
     const originalRequest = error.config;
 
+    // 🔹 Nếu backend trả 503 → redirect Maintenance
+    if (error.response?.status === 503) {
+      const me = localStorage.getItem("me");
+      const user = me ? JSON.parse(me) : null;
+
+      const isAdminRoute = window.location.pathname.startsWith("/admin");
+      const isAdminUser = user?.role === "admin";
+
+      if (!isAdminRoute && !isAdminUser) {
+        window.location.href = "/maintenance";
+      }
+      return Promise.reject(error);
+    }
+
+    // 🔹 Nếu 401 → thử refresh token
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&

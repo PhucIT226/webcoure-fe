@@ -115,7 +115,7 @@ export default function UserDetail() {
               Số điện thoại: {user.profile?.phone || "Chưa cập nhật"}
             </p>
             {user.role?.name === "student" && (
-              <p className="flex flex-col text-gray-800 font-medium">
+              <div className="flex flex-col text-gray-800 font-medium">
                 <span className="flex items-center mb-1">
                   <FaBookOpen className="mr-3 text-purple-500 text-lg" />
                   Khóa học đang học:
@@ -131,7 +131,7 @@ export default function UserDetail() {
                 ) : (
                   <span className="ml-8">Chưa đăng ký khóa học</span>
                 )}
-              </p>
+              </div>
             )}
           </div>
 
@@ -172,21 +172,16 @@ export default function UserDetail() {
         </div>
 
         {/* Thumbnail dạng carousel mini */}
-        {user.avatarUrls && user.avatarUrls.length > 0 && (
+        {!user.avatarUrls?.length && user.avatarUrl && (
           <div className="mt-6">
             <p className="font-semibold mb-3 text-gray-800 text-lg">
               Ảnh đại diện:
             </p>
-            <div className="flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 p-2 rounded-xl">
-              {user.avatarUrls.map((img, i) => (
-                <img
-                  key={i}
-                  src={`http://localhost:3000${img.url}`}
-                  alt={user.name}
-                  className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm hover:scale-105 transition-transform duration-300"
-                />
-              ))}
-            </div>
+            <img
+              src={`http://localhost:3000${user.avatarUrl}`}
+              alt={user.name}
+              className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm"
+            />
           </div>
         )}
       </div>

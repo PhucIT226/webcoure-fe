@@ -45,9 +45,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="bg-white shadow-md rounded-xl p-8 w-full max-w-md">
-        <h3 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+    <div className="flex justify-center items-center min-h-screen bg-base-100">
+      <div className="bg-base-300 shadow-md rounded-xl p-8 w-full max-w-md">
+        <h3 className="text-2xl font-semibold text-center mb-6 text-base-content">
           Đăng nhập
         </h3>
 
@@ -56,13 +56,14 @@ const Login = () => {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 font-medium mb-1"
+              className="block text-base-content font-medium mb-1"
             >
               Email
             </label>
             <input
               id="email"
               type="email"
+              autoComplete="username"
               {...register("email")}
               placeholder="Nhập email"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
@@ -80,13 +81,14 @@ const Login = () => {
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-gray-700 font-medium mb-1"
+              className="block text-base-content font-medium mb-1"
             >
               Mật khẩu
             </label>
             <input
               id="password"
               type="password"
+              autoComplete="current-password"
               {...register("password")}
               placeholder="Nhập mật khẩu"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
@@ -123,7 +125,7 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="text-center text-gray-600 mt-6">
+        <p className="text-center text-base-content mt-6">
           Chưa có tài khoản?{" "}
           <button
             type="button"

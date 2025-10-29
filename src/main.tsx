@@ -9,6 +9,10 @@ import "nprogress/nprogress.css";
 import { PersistGate } from "redux-persist/integration/react";
 import "./styles/user/App.scss";
 // import "./styles/App.css";
+import "./i18n";
+
+const savedTheme = localStorage.getItem("theme") || "light";
+document.documentElement.setAttribute("data-theme", savedTheme);
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>

@@ -15,9 +15,6 @@ export const RecentOrders = () => {
             Đơn hàng gần đây
           </h3>
         </div>
-        <span className="text-xs text-gray-500 italic">
-          Cập nhật trong 24h qua
-        </span>
       </div>
 
       {/* Content */}

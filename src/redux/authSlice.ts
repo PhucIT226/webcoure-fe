@@ -100,7 +100,9 @@ const authSlice = createSlice({
         // ✅ Lưu token vào localStorage
         localStorage.setItem(
           "me",
-          JSON.stringify({ accessToken: action.payload.accessToken })
+          JSON.stringify({ 
+            accessToken: action.payload.accessToken,
+          })
         );
       })
       .addCase(signin.rejected, (state, action) => {
