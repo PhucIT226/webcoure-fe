@@ -82,11 +82,7 @@ const Categories = () => {
               }
             >
               <img
-<<<<<<< Updated upstream
                 src={`${BASE_API_URL}${course.thumbnailUrl}`}
-=======
-                src={`http://localhost:3000${course.thumbnailUrl}`}
->>>>>>> Stashed changes
                 alt={course.title}
                 className="w-full h-40 object-cover rounded"
               />
