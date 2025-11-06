@@ -5,7 +5,7 @@ import axios from "./axiosClient";
 
 export const createPayment = async (payload: PaymentPayload) => {
   const res = await axios.post("payments/create-payment-intent", payload, {
-    withCredentials: true,
+    withCredentials: false,
   });
   console.log("📨 Response from backend:", res.data);
   return res.data;

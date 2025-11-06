@@ -80,13 +80,11 @@ const Categories = () => {
                 })
               }
             >
-              {course.thumbnailUrl && (
-                <img
-                  src={`http://localhost:3000${course.thumbnailUrl}`}
-                  alt={course.title}
-                  className="w-full h-40 object-cover rounded"
-                />
-              )}
+              <img
+                src={course.thumbnailUrl}
+                alt={course.title}
+                className="w-full h-40 object-cover rounded"
+              />
               <h3 className="font-semibold mt-2">{course.title}</h3>
               <p className="mt-1">{course.price?.toLocaleString?.() || 0} ₫ </p>
             </div>

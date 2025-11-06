@@ -49,13 +49,11 @@ const Courses = () => {
             >
               <div className="course-card mt-6 bg-white rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform">
                 <div className="course-card_image mb-4">
-                  {course.thumbnailUrl && (
-                    <img
-                      src={`http://localhost:3000${course.thumbnailUrl}`}
-                      alt={course.title}
-                      className="w-full h-48 object-cover rounded-t-2xl"
-                    />
-                  )}
+                  <img
+                    src={course.thumbnailUrl}
+                    alt={course.title}
+                    className="w-full h-48 object-cover rounded-t-2xl"
+                  />
                 </div>
                 <div className="course-card_title mb-3 font-semibold text-lg text-gray-800">
                   {course.title}
