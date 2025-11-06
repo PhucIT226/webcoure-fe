@@ -13,7 +13,6 @@ export function useUserChatSocket(userId?: string, userName?: string) {
     setSocket(s);
 
     s.on("connect", () => {
-      console.log("✅ User connected:", s.id);
       s.emit("join", { userId, role: "user", userName });
     });
 

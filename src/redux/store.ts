@@ -8,7 +8,6 @@ import dashboardSlice from "./dashboardSlice";
 import categorySlice from "./categorySlice";
 import orderSlice from "./orderSlice";
 import cartSlice from "./cartSlice";
-import chatSlice from "./chatSlice";
 import reviewSlice from "./reviewSlice";
 import couponSlice from "./couponSlice";
 import lessonSlice from "./lessonSlice";
@@ -36,7 +35,6 @@ export const store = configureStore({
     lesson: lessonSlice,
     payment: paymentSlice,
     cart: cartSlice,
-    chat: chatSlice,
   },
 });
 export const persitor = persistStore(store);

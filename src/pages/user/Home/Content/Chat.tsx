@@ -5,7 +5,7 @@ import { useUserChatSocket } from "./hooks/useUserChatSocket";
 import ChatPanel from "../../../../components/ui/ChatPanel";
 import type { TAny } from "../../../../types/common";
 
-type Message = { sender: "user" | "admin" | "ai"; text: string };
+type Message = { sender: "user" | "admin"; text: string };
 
 export default function ChatWidget() {
   const { user } = useAppSelector((s) => s.auth);

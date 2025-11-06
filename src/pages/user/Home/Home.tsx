@@ -4,7 +4,7 @@ import Categories from "./Content/Categories";
 import "../../../styles/user/home/home.scss";
 import DetailPanel from "./Content/DetailPanel";
 import Testimonials from "./Content/Testimonials";
-import ChatAI from "./Content/ChatAi";
+import Chat from "./Content/Chat";
 
 const Home = () => {
   return (
@@ -22,7 +22,7 @@ const Home = () => {
         <Testimonials />
       </div>
 
-      <ChatAI />
+      <Chat />
     </>
   );
 };

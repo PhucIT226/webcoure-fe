@@ -7,6 +7,7 @@ nProgress.configure({ showSpinner: false, trickleSpeed: 100 });
 const axiosClient = axios.create({
   baseURL: API_URL,
   headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
 // 🔹 Interceptor Request

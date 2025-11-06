@@ -1,5 +1,5 @@
 export type Message = {
-  sender: "user" | "admin" | "ai";
+  sender: "user" | "admin";
   text: string;
   timestamp?: Date;
   userName?: string;

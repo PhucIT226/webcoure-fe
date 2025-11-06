@@ -1,5 +1,4 @@
-import { useEffect, useState, useRef, type ReactNode } from "react";
-import axios from "../services/axiosClient";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   FaBars,
   FaUser,
@@ -12,7 +11,7 @@ import {
   FaRobot,
 } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import type { Menu } from "../types/menu";
 import type { TAny } from "../types/common";
 import { useTranslation } from "react-i18next";
@@ -23,11 +22,6 @@ type MenuType = Menu[];
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const { t } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<TAny[]>([]);
-  const [loadingSearch, setLoadingSearch] = useState(false);
-  const navigate = useNavigate();
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   const menu: MenuType = [
@@ -42,35 +36,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   ];
 
   const [menus, setMenus] = useState(menu);
-
-  useEffect(() => {
-    const q = searchQuery.trim();
-    if (q === "") {
-      setSuggestions([]);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      try {
-        setLoadingSearch(true);
-        const res = await axios.get(
-          `/admin/search?query=${encodeURIComponent(q)}`
-        );
-        setSuggestions(res.data || []);
-      } catch (err) {
-        console.error("❌ Lỗi khi fetch search:", err);
-      } finally {
-        setLoadingSearch(false);
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
-
-  const handleSelect = (item: TAny) => {
-    setSuggestions([]);
-    navigate(`/admin/${item.type.toLowerCase()}s/${item.id}`);
-  };
 
   useEffect(() => {
     setMenus((prevMenus: TAny) =>
@@ -163,41 +128,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             >
               <FaBars />
             </button>
-          </div>
-
-          <div className="relative w-64">
-            <input
-              type="text"
-              placeholder={t("searchPlaceholder")}
-              className="border rounded-lg px-3 py-1 w-full focus:outline-none focus:ring focus:ring-blue-300"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && suggestions.length > 0 && (
-              <div
-                ref={dropdownRef}
-                className="absolute top-full left-0 w-full bg-base-100 border shadow-lg z-50 max-h-60 overflow-auto"
-              >
-                {loadingSearch ? (
-                  <p className="p-2 text-gray-500">Đang tìm...</p>
-                ) : (
-                  suggestions.map((item) => (
-                    <div
-                      key={item.type + item.id}
-                      className="p-2 cursor-pointer hover:bg-blue-100"
-                      onClick={() => handleSelect(item)}
-                    >
-                      <span className="font-semibold">
-                        {item.name || item.title || item.email}
-                      </span>{" "}
-                      <span className="text-gray-500 text-sm">
-                        ({item.type})
-                      </span>
-                    </div>
-                  ))
-                )}
-              </div>
-            )}
           </div>
 
           {/* Right: Settings */}
