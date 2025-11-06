@@ -2,6 +2,7 @@ import { Button } from "../../../components/ui/button";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { useNavigate } from "react-router-dom";
 import { clearCart, removeFromCart } from "../../../redux/cartSlice";
+import { BASE_API_URL } from "../../../constants";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
