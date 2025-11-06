@@ -12,6 +12,7 @@ import {
   FaArrowLeft,
   FaInfoCircle,
 } from "react-icons/fa";
+import { BASE_API_URL } from "../../../constants";
 
 export default function OrderDetail() {
   const navigate = useNavigate();
@@ -177,7 +178,7 @@ export default function OrderDetail() {
                 >
                   {item.course?.thumbnailUrl && (
                     <img
-                      src={`http://localhost:3000${item.course.thumbnailUrl}`}
+                      src={`${BASE_API_URL}${item.course.thumbnailUrl}`}
                       alt={item.course.title}
                       className="w-24 h-20 object-cover rounded-lg border border-gray-200"
                     />

@@ -14,6 +14,7 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa";
+import { BASE_API_URL } from "../../../constants";
 
 export default function CourseDetail() {
   const navigate = useNavigate();
@@ -191,7 +192,7 @@ export default function CourseDetail() {
               Ảnh khóa học:
             </p>
             <img
-              src={`http://localhost:3000${course.thumbnailUrl}`}
+              src={`${BASE_API_URL}${course.thumbnailUrl}`}
               alt={course.title}
               className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm"
             />

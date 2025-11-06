@@ -48,7 +48,7 @@ const CartPage = () => {
               >
                 {/* Hình ảnh */}
                 <img
-                  src={`http://localhost:3000${item.thumbnailUrl}`}
+                  src={`${BASE_API_URL}${item.thumbnailUrl}`}
                   alt={item.title}
                   className="w-24 h-24 object-cover rounded-lg"
                 />

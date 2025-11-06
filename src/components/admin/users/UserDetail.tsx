@@ -13,6 +13,7 @@ import {
   FaArrowLeft,
   FaBookOpen,
 } from "react-icons/fa";
+import { BASE_API_URL } from "../../../constants";
 
 export default function UserDetail() {
   const navigate = useNavigate();
@@ -177,7 +178,7 @@ export default function UserDetail() {
               Ảnh đại diện:
             </p>
             <img
-              src={`http://localhost:3000${user.avatarUrl}`}
+              src={`${BASE_API_URL}${user.avatarUrl}`}
               alt={user.name}
               className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm"
             />
