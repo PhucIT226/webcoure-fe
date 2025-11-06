@@ -7,7 +7,6 @@ nProgress.configure({ showSpinner: false, trickleSpeed: 100 });
 const axiosClient = axios.create({
   baseURL: API_URL,
   headers: { "Content-Type": "application/json" },
-  withCredentials: true,
 });
 
 // 🔹 Interceptor Request
@@ -62,7 +61,9 @@ axiosClient.interceptors.response.use(
       !originalRequest.url.includes("/auth/refresh")
     ) {
       originalRequest._retry = true;
-      console.warn("⚠️ [401] Access token có thể hết hạn → thử refresh token...");
+      console.warn(
+        "⚠️ [401] Access token có thể hết hạn → thử refresh token..."
+      );
 
       try {
         const refreshRes = await axiosClient.post("/auth/refresh");
