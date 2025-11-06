@@ -53,6 +53,13 @@ export default function CourseList() {
     return sortOrder === "asc" ? "↑" : "↓";
   };
 
+  const pages: number[] = [];
+  if (pagination) {
+    for (let i = 1; i <= pagination.totalPages; i++) {
+      pages.push(i);
+    }
+  }
+  
   return (
     <div className="p-6">
       {/* Header + Search */}
@@ -149,7 +156,9 @@ export default function CourseList() {
                   <td className="border text-center px-4 py-2">
                     {(page - 1) * (pagination?.pageSize ?? 15) + index + 1}
                   </td>
-                  <td className="border px-4 py-2 font-medium">{course.title}</td>
+                  <td className="border px-4 py-2 font-medium max-w-[250px] truncate">
+                    {course.title}
+                  </td>
                   <td className="border px-4 py-2">{course.instructor?.name}</td>
                   <td className="border px-4 py-2 text-right">
                     {Number(course.price).toLocaleString("vi-VN")} đ
@@ -209,21 +218,19 @@ export default function CourseList() {
       </div>
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && (
+      {pages.length > 1 && (
         <div className="flex gap-2 mt-4">
-          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
-            (p) => (
-              <button
-                key={p}
-                onClick={() => setPage(p)}
-                className={`px-3 py-1 border rounded ${
-                  page === p ? "bg-blue-500 text-white" : ""
-                }`}
-              >
-                {p}
-              </button>
-            )
-          )}
+          {pages.map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={`px-3 py-1 border rounded ${
+                page === p ? "bg-blue-500 text-white" : ""
+              }`}
+            >
+              {p}
+            </button>
+          ))}
         </div>
       )}
     </div>

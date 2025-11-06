@@ -52,19 +52,6 @@ const Header = () => {
     dispatch(removeFromCart(id));
   };
 
-  // ✅ Hàm xử lý thanh toán
-  const handleCheckout = () => {
-    navigate("/payment", {
-      state: {
-        courses: cartItems.map((course) => ({
-          courseId: course.id,
-          courseTitle: course.title,
-          coursePrice: course.price,
-        })),
-      },
-    });
-  };
-
   return (
     <header className="w-full border-b bg-base-100 shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -149,14 +136,18 @@ const Header = () => {
                   {/* ✅ Hàng nút hành động */}
                   <div className="flex justify-between items-center px-3 py-2 gap-2">
                     <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate("/check-cart")}
+                    >
+                      Thanh toán
+                    </Button>
+                    <Button
                       variant="destructive"
                       size="sm"
                       onClick={() => dispatch(clearCart())}
                     >
                       Xóa tất cả
-                    </Button>
-                    <Button size="sm" onClick={handleCheckout}>
-                      Thanh toán
                     </Button>
                   </div>
                 </>

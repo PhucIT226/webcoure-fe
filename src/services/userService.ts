@@ -12,7 +12,10 @@ const UserService = {
     return res.data.data;
   },
 
-  async create(user: Partial<User>, files?: File[]): Promise<User> {
+  async create(
+    user: Partial<User>,
+    file?: File | null
+  ): Promise<User> {
     const formData = new FormData();
 
     Object.entries(user).forEach(([key, value]) => {
@@ -25,8 +28,8 @@ const UserService = {
       }
     });
 
-    if (files && files.length > 0) {
-      formData.append("avatar", files[0]);
+    if (file) {
+      formData.append("avatar", file);
     }
 
     const res = await axios.post<User>("/users", formData, {
@@ -36,7 +39,11 @@ const UserService = {
     return res.data;
   },
 
-  async update(id: string, user: Partial<User>, files?: File[]): Promise<User> {
+  async update(
+    id: string,
+    user: Partial<User>,
+    file?: File | null
+  ): Promise<User> {
     const formData = new FormData();
 
     Object.entries(user).forEach(([key, value]) => {
@@ -49,8 +56,8 @@ const UserService = {
       }
     });
 
-    if (files && files.length > 0) {
-      formData.append("avatar", files[0]);
+    if (file) {
+      formData.append("avatar", file);
     }
 
     const res = await axios.patch<{ status: boolean; message: string; data: User }>(

@@ -1,9 +1,14 @@
-// components/admin/dashboards/RecentReviews.tsx
 import { useAppSelector } from "../../../hooks";
 import { FaStar, FaUserCircle, FaBookOpen, FaQuoteLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const RecentReviews = () => {
+  const navigate = useNavigate();
   const { recentReviews } = useAppSelector((state) => state.dashboard);
+
+  const handleNavigate = (id: string) => {
+    navigate(`reviews/${id}`);
+  }
 
   if (!recentReviews?.length) {
     return (
@@ -30,6 +35,7 @@ export const RecentReviews = () => {
         {recentReviews.map((r) => (
           <li
             key={r.id}
+            onClick={() => handleNavigate(r.id)}
             className="py-4 flex items-start gap-3 hover:bg-gray-50 rounded-xl px-3 transition-all"
           >
             <FaUserCircle className="text-3xl text-gray-400 mt-1 flex-shrink-0" />

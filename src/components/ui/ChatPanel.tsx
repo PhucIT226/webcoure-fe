@@ -23,7 +23,6 @@ export default function ChatPanel({
   messages,
   adminTyping,
   input,
-  setInput,
   handleInputChange,
   handleKeyPress,
   handleSend,

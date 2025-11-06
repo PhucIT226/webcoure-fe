@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { fetchCourses } from "../../../../redux/courseSlice";
 import type { Course } from "../../../../types/course";
@@ -10,6 +10,7 @@ const SearchCourses = () => {
   const { search } = useLocation(); // lấy query từ URL, ví dụ ?search=react
   const queryParams = new URLSearchParams(search);
   const searchValue = queryParams.get("search") || "";
+  const navigate = useNavigate();
 
   const courses = useAppSelector((state) => state.course.data);
   const loading = useAppSelector((state) => state.course.loading);
@@ -43,9 +44,20 @@ const SearchCourses = () => {
             <div
               key={course.id}
               className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-transform hover:-translate-y-1 cursor-pointer"
+              onClick={() =>
+                navigate(`/course/${course.id}`, {
+                  state: {
+                    courseTitle: course.title,
+                    courseDes: course.description,
+                    courseId: course.id,
+                    coursePrice: course.price,
+                    courseImage: course.thumbnailUrls,
+                  },
+                })
+              }
             >
               <img
-                src={course.thumbnailUrls?.[0]?.url}
+                src={course.thumbnailUrl || "/fallback.png"}
                 alt={course.title}
                 className="w-full h-48 object-cover rounded-t-2xl"
               />

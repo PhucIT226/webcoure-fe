@@ -20,7 +20,6 @@ export default function ChatWindow({
   userChats,
   userStatuses,
   input,
-  setInput,
   handleInputChange,
   handleKeyPress,
   handleSend,
@@ -32,8 +31,9 @@ export default function ChatWindow({
     <div className="flex-1 flex flex-col bg-base-100 p-4">
       <div className="mb-2">
         <h2 className="font-bold text-lg">
-          {currentUserId ? `Chat với: ${getUserName(currentUserId)}` :
-           "Chọn user để chat"}
+          {currentUserId
+            ? `Chat với: ${getUserName(currentUserId)}`
+            : "Chọn user để chat"}
         </h2>
 
         {currentUserId && userStatuses.get(currentUserId) && (
@@ -73,10 +73,14 @@ export default function ChatWindow({
             <div className="bg-gray-200 text-gray-800 px-3 py-2 rounded-2xl rounded-bl-none text-sm">
               <span className="flex gap-1">
                 <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" />
-                <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.2s" }} />
-                <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.4s" }} />
+                <span
+                  className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.2s" }}
+                />
+                <span
+                  className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.4s" }}
+                />
               </span>
             </div>
           </div>

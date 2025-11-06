@@ -24,7 +24,6 @@ const DashboardPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { summary, loading } = useAppSelector((state) => state.dashboard);
-
   const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {

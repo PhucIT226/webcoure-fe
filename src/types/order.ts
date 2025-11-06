@@ -1,4 +1,4 @@
-import type { Image, Pagination } from "./common";
+import type { Pagination } from "./common";
 
 export type OrderItem = {
   id?: string;
@@ -7,7 +7,7 @@ export type OrderItem = {
   course?: {
     id: string;
     title: string;
-    thumbnailUrls?: Image[];
+    thumbnailUrl?: string;
   };
   price: number;
   discount?: number;

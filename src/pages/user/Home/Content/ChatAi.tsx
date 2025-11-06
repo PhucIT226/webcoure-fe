@@ -3,12 +3,13 @@ import { useAppSelector } from "../../../../hooks";
 import { getUserChatHistory } from "../../../../services/chatService";
 import { useUserChatSocket } from "./hooks/useUserChatSocket";
 import ChatPanel from "../../../../components/ui/ChatPanel";
+import type { TAny } from "../../../../types/common";
 
 type Message = { sender: "user" | "admin" | "ai"; text: string };
 
 export default function ChatWidget() {
   const { user } = useAppSelector((s) => s.auth);
-  const [socket, setSocket] = useState<any>(null);
+  const [socket, setSocket] = useState<TAny>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -24,7 +25,10 @@ export default function ChatWidget() {
         setLoading(true);
         const { messages: history } = await getUserChatHistory();
         setMessages(history);
-        setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+        setTimeout(
+          () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }),
+          100
+        );
       } catch (error) {
         console.error("❌ Lỗi load lịch sử:", error);
       } finally {
@@ -80,7 +84,10 @@ export default function ChatWidget() {
     if (e.key === "Enter") handleSend();
   };
 
-  useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages, adminTyping]);
+  useEffect(
+    () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }),
+    [messages, adminTyping]
+  );
 
   return (
     <ChatPanel

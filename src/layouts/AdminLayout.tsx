@@ -31,54 +31,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const location = useLocation();
 
   const menu: MenuType = [
-    {
-      label: t("dashboard"),
-      to: "",
-      icon: FaThLarge,
-      defaultColor: "text-blue-600",
-    },
-    {
-      label: t("users"),
-      to: "users",
-      icon: FaUser,
-      defaultColor: "text-green-600",
-    },
-    {
-      label: t("courses"),
-      to: "courses",
-      icon: FaGraduationCap,
-      defaultColor: "text-purple-600",
-    },
-    {
-      label: t("categories"),
-      to: "categories",
-      icon: FaTags,
-      defaultColor: "text-pink-500",
-    },
-    {
-      label: t("orders"),
-      to: "orders",
-      icon: FaCreditCard,
-      defaultColor: "text-orange-500",
-    },
-    {
-      label: t("reviews"),
-      to: "reviews",
-      icon: FaStarHalfAlt,
-      defaultColor: "text-yellow-500",
-    },
-    {
-      label: t("coupons"),
-      to: "coupons",
-      icon: FaGift,
-      defaultColor: "text-red-500",
-    },
-    {
-      label: t("chatbot"),
-      to: "chatbot",
-      icon: FaRobot,
-      defaultColor: "text-blue-500",
-    },
+    { label: t("dashboard"), to: "", icon: FaThLarge, defaultColor: "text-blue-600" },
+    { label: t("users"), to: "users", icon: FaUser, defaultColor: "text-green-600" },
+    { label: t("courses"), to: "courses", icon: FaGraduationCap, defaultColor: "text-purple-600" },
+    { label: t("categories"), to: "categories", icon: FaTags, defaultColor: "text-pink-500" },
+    { label: t("orders"), to: "orders", icon: FaCreditCard, defaultColor: "text-orange-500" },
+    { label: t("reviews"), to: "reviews", icon: FaStarHalfAlt, defaultColor: "text-yellow-500" },
+    { label: t("coupons"), to: "coupons", icon: FaGift, defaultColor: "text-red-500" },
+    { label: t("chatbot"), to: "chatbot", icon: FaRobot, defaultColor: "text-blue-500" },
   ];
 
   const [menus, setMenus] = useState(menu);
@@ -175,24 +135,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                       {item.label}
                     </span>
                   </Link>
-
-                  {/* Submenu */}
-                  {item.children && item.children.length > 0 && sidebarOpen && (
-                    <ul className="ml-10 mt-1 space-y-1">
-                      {item.children.map((sub) => (
-                        <li
-                          key={sub.label}
-                          className={`px-3 py-1 rounded cursor-pointer text-sm ${
-                            sub.active
-                              ? "bg-base-100 text-[#2563eb] font-semibold"
-                              : "text-gray-600 hover:bg-[#dbeafe] hover:text-[#2563eb]"
-                          }`}
-                        >
-                          {sub.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </li>
               );
             })}
@@ -203,13 +145,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       {/* Main Content Area */}
       <div
         className="flex-1 flex flex-col min-h-screen transition-all duration-200"
-        style={{
-          marginLeft: sidebarOpen ? "16rem" : "5rem",
-        }}
+        style={{ marginLeft: sidebarOpen ? "16rem" : "5rem" }}
       >
         {/* Header */}
         <header
-          className="fixed top-0 left-0 right-0 h-16 bg-base-100 shadow z-20 flex items-center justify-between px-6 transition-all duration-200"
+          className="fixed top-0 left-0 right-0 h-16 bg-base-100 shadow z-50 flex items-center justify-between px-6 transition-all duration-200"
           style={{
             left: sidebarOpen ? "16rem" : "5rem",
             width: sidebarOpen ? "calc(100% - 16rem)" : "calc(100% - 5rem)",

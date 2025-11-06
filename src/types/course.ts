@@ -1,4 +1,4 @@
-import type { Image, Pagination } from "./common";
+import type { Pagination } from "./common";
 
 export type Course = {
   id?: string;
@@ -21,7 +21,6 @@ export type Course = {
   updatedAt?: string;
   status: "published" | "draft" | "closed";
   thumbnailUrl?: string;
-  thumbnailUrls?: Image[];
 };
 
 export interface CourseResDto {

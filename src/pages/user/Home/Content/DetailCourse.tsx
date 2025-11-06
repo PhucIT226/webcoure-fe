@@ -17,6 +17,7 @@ const DetailCourse = () => {
   const courseId = location.state?.courseId;
   const courseTitle = location.state?.courseTitle;
   const coursePrice = location.state?.coursePrice;
+  const courseImage = location.state?.courseImage;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { lessons, loading } = useAppSelector((state) => state.lesson);
@@ -117,6 +118,7 @@ const DetailCourse = () => {
                 id: courseId,
                 title: courseTitle,
                 price: coursePrice,
+                thumbnailUrl: courseImage,
               })
             );
             toast.success("Đã thêm vào giỏ hàng");
@@ -151,9 +153,7 @@ const DetailCourse = () => {
             >
               ✕
             </button>
-
             {/* 👉 Video giới thiệu (YouTube hoặc nội bộ) */}
-            {/* Nếu bạn dùng YouTube: */}
             <iframe
               width="100%"
               height="400"
@@ -161,13 +161,6 @@ const DetailCourse = () => {
               title="Giới thiệu khóa học"
               allowFullScreen
             ></iframe>
-
-            {/* Nếu dùng file video nội bộ, có thể thay bằng:
-            <video width="100%" height="400" controls autoPlay>
-              <source src="/videos/demo.mp4" type="video/mp4" />
-              Trình duyệt của bạn không hỗ trợ video.
-            </video> 
-            */}
           </div>
         </div>
       )}

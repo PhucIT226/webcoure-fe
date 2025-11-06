@@ -103,9 +103,6 @@ const userSlice = createSlice({
           state.loading = false;
           state.data = action.payload.data.map((user: TAny) => ({
             ...user,
-            avatarUrls: user.avatarUrl
-              ? [{ url: user.avatarUrl }]
-              : [],
           }));
           state.pagination = action.payload.pagination;
         }

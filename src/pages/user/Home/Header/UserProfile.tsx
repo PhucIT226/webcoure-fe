@@ -134,7 +134,6 @@ const UserProfile = () => {
                 <p className="text-gray-600">{user.email}</p>
                 <div className="mt-5 border-t pt-4 text-sm text-gray-500">
                   <p>📍 {user.location}</p>
-                  <p>📞 {profile.phone}</p>
                 </div>
 
                 <div className="mt-6 flex justify-center gap-4">
@@ -143,9 +142,6 @@ const UserProfile = () => {
                     className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
                   >
                     Chỉnh sửa
-                  </button>
-                  <button className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">
-                    Đăng xuất
                   </button>
                 </div>
               </>

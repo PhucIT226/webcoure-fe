@@ -41,6 +41,7 @@ const Courses = () => {
                     courseDes: course.description,
                     courseId: course.id,
                     coursePrice: course.price,
+                    courseImage: course.thumbnailUrl,
                   },
                 })
               }
@@ -48,9 +49,9 @@ const Courses = () => {
             >
               <div className="course-card mt-6 bg-white rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform">
                 <div className="course-card_image mb-4">
-                  {course.thumbnailUrls?.[0] && (
+                  {course.thumbnailUrl && (
                     <img
-                      src={course.thumbnailUrls[0].url}
+                      src={`http://localhost:3000${course.thumbnailUrl}`}
                       alt={course.title}
                       className="w-full h-48 object-cover rounded-t-2xl"
                     />

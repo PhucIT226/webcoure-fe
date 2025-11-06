@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import type { RegisterForm } from "../types/auth";
 import { authService } from "../services/authService";
 import { toast } from "react-toastify";
+import type { TAny } from "../types/common";
 
 const schema = yup.object({
   name: yup.string().required("Họ tên là bắt buộc"),
@@ -23,7 +24,7 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegisterForm>({
     resolver: yupResolver(schema),
   });
@@ -31,9 +32,13 @@ const Register = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: RegisterForm) => {
-    await authService.signup(data);
-    toast.success("Đăng kí thành công,vui lòng kiểm tra mail để xác nhận");
-    navigate("/checkmail", { state: { email: data } });
+    try {
+      await authService.signup(data);
+      toast.success("Đăng kí thành công,vui lòng kiểm tra mail để xác nhận");
+      navigate("/checkmail", { state: { email: data } });
+    } catch (error: TAny) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -141,9 +146,12 @@ const Register = () => {
           {/* Nút Đăng ký */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-semibold hover:bg-indigo-700 transition"
+            disabled={isSubmitting}
+            className="w-full bg-indigo-600 text-white py-2.5 
+            rounded-lg font-semibold hover:bg-indigo-700 transition 
+            disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            Đăng ký
+            {isSubmitting ? "Đang đăng ký..." : "Đăng ký"}
           </button>
         </form>
 

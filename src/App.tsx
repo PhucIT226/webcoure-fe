@@ -1,10 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Maintenance from "./pages/admin/maintenance/MaintenancePage";
 
-// Protected routes
-// import { ProtectedRoute } from "./components/admin/ProtectedRoute";
-// import { PublicRoute } from "./components/admin/PublicRoute";
-
 // User pages
 import User from "./pages/user/user";
 import Home from "./pages/user/Home/Home";
@@ -16,11 +12,12 @@ import Register from "./Auth/register";
 import { Bounce, ToastContainer } from "react-toastify";
 import PaymentPage from "./pages/user/Payment/PaymentPage";
 import UserProfile from "./pages/user/Home/Header/UserProfile";
+import VerifyEmail from "./pages/user/Email/verifyEmail";
+import CheckEmail from "./pages/user/Email/checkEmail";
 
 // Admin pages
 import Admin from "./pages/admin/admin";
 import Dashboard from "./pages/admin/dashboard/dashboard";
-import Search from "./components/admin/search/search";
 import CourseList from "./pages/admin/courses/courses";
 import CourseDetail from "./components/admin/courses/CourseDetail";
 import CourseCreate from "./pages/admin/courses/Course-create";
@@ -44,8 +41,7 @@ import CouponCreate from "./pages/admin/coupons/coupon-create";
 import CouponEdit from "./pages/admin/coupons/coupon-edit";
 import Setting from "./pages/admin/setting/setting";
 import ChatBot from "./pages/admin/chat/AdminChat";
-import VerifyEmail from "./pages/user/Email/verifyEmail";
-import CheckEmail from "./pages/user/Email/checkEmail";
+import CartPage from "./pages/user/Payment/CartPage";
 
 function App() {
   // Cho admin vẫn vào bình thường
@@ -65,8 +61,6 @@ function App() {
         {/* Admin routes */}
         <Route path="/admin" element={<Admin />}>
           <Route index element={<Dashboard />} />
-
-          <Route path="search" element={<Search />} />
 
           {/* Course routes */}
           <Route path="courses">
@@ -128,11 +122,14 @@ function App() {
         <Route path="/profile/:id" element={<UserProfile />} />
         <Route path="auth/verify-email/:token" element={<VerifyEmail />} />
         <Route path="/checkmail" element={<CheckEmail />} />
+        <Route path="/check-cart" element={<CartPage />} />
 
         {/* Maintenance route để FE redirect */}
-        {!isAdminRoute && <Route path="/maintenance" element={<Maintenance />} />}
+        {!isAdminRoute && (
+          <Route path="/maintenance" element={<Maintenance />} />
+        )}
       </Routes>
-      
+
       <ToastContainer
         position="top-right"
         autoClose={1000}

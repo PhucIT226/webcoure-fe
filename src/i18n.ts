@@ -5,7 +5,7 @@ const resources = {
   vi: {
     translation: {
         // Sidebar
-        dashboard: "Bảng điều khiển",
+        dashboard: "Dashboard",
         users: "Người dùng",
         courses: "Khóa học",
         categories: "Danh mục",
@@ -94,7 +94,7 @@ i18n.use(initReactI18next).init({
   resources,
   lng: localStorage.getItem("language") || "vi",
   fallbackLng: "vi",
-  interpolation: { escapeValue: false },
+  interpolation: { escapeValue: false }, // cho phép hiển thị HTML trong bản dịch.
 });
 
 export default i18n;

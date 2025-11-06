@@ -1,4 +1,6 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import axios from "../../../services/axiosClient";
 import type { Review } from "../../../types/review";
 import {
   FaKey,
@@ -14,7 +16,35 @@ import {
 export default function ReviewDetail() {
   const navigate = useNavigate();
   const location = useLocation();
-  const review = location.state?.review as Review | undefined;
+  const { id } = useParams();
+  const [review, setReview] = useState<Review | null>(
+    location.state?.review || null
+  );
+  const [loading, setLoading] = useState(!location.state?.review);
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      axios
+        .get(`/reviews/${id}`)
+        .then((res) => {
+          setReview(res.data.data);
+        })
+        .catch((err) => {
+          console.error("❌ Lỗi khi fetch course:", err);
+          setReview(null);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="p-6 bg-gray-50 min-h-screen flex items-center justify-center">
+        <p className="text-gray-600 text-lg font-medium">Đang tải dữ liệu...</p>
+      </div>
+    );
+  }
 
   if (!review) {
     return (

@@ -1,10 +1,16 @@
-import type { TAny } from "../types/common";
+import type { Image, TAny } from "../types/common";
 import type { Course } from "../types/course";
-
-export const getThumbnailUrl = (course: Course | TAny): string => {
-  if (Array.isArray(course.thumbnailUrls) && course.thumbnailUrls.length > 0) {
-    return course.thumbnailUrls[0].url;
+export const getThumbnailUrl = (
+  course: Course | { image?: Image[] } | TAny
+): string => {
+  // Ưu tiên: nếu có image[] trong cart item
+  if (Array.isArray(course.image) && course.image.length > 0) {
+    return course.image[0].url;
   }
+
+  // Nếu có thumbnailUrl đơn lẻ
   if (course.thumbnailUrl) return course.thumbnailUrl;
+
+  // Fallback ảnh mặc định
   return "/fallback.png";
 };

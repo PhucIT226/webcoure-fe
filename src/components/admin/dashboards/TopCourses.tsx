@@ -1,9 +1,16 @@
 import { useAppSelector } from "../../../hooks";
 import { FaFireAlt, FaBookOpen } from "react-icons/fa";
 import { FiTrendingUp } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+
 
 export const TopCourses = () => {
+  const navigate = useNavigate();
   const { topCourses, loading } = useAppSelector((state) => state.dashboard);
+
+  const handleNavigate = (id: string) => {
+    navigate(`courses/${id}`);
+  };
 
   return (
     <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
@@ -21,7 +28,8 @@ export const TopCourses = () => {
           {topCourses.map((course, index) => (
             <li
               key={course.id}
-              className="py-4 flex justify-between items-center hover:bg-gray-50 px-3 rounded-xl transition-all duration-200"
+              onClick={() => handleNavigate(course.id)}
+              className="py-4 flex justify-between items-center hover:bg-gray-50 px-3 rounded-xl transition-all duration-200 cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <div
@@ -42,7 +50,6 @@ export const TopCourses = () => {
                     <FaBookOpen className="text-blue-500" />
                     {course.title}
                   </p>
-                  <p className="text-xs text-gray-500">Mã: #{course.id}</p>
                 </div>
               </div>
 

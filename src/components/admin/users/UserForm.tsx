@@ -8,7 +8,7 @@ type Role = { id: string; name: string };
 
 type Props = {
   initialData?: User | null;
-  onSubmit: (data: Partial<User>, files?: File[]) => void;
+  onSubmit: (data: Partial<User>, file?: File | null) => void;
 };
 
 export default function UserForm({ initialData, onSubmit }: Props) {
@@ -18,19 +18,26 @@ export default function UserForm({ initialData, onSubmit }: Props) {
   const [roleId, setRoleId] = useState<string>("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [status, setStatus] = useState<"active" | "inactive" | "banned" | "pending">("active");
-  const [avatarFiles, setAvatarFiles] = useState<File[]>([]);
-  const [preview, setPreview] = useState<string[]>([]);
+  const [status, setStatus] = useState<"active" | "inactive" | "banned">("active");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const fetchRoles = async () => {
-      const res = await axios.get("/roles");
-      setRoles(res.data.data || []);
+      try {
+        const res = await axios.get("/roles");
+        setRoles(res.data.data || []);
+      } catch (err) {
+        console.error("Lỗi khi fetch roles:", err);
+      }
     };
+
+    // Gọi hàm async
     fetchRoles();
   }, []);
 
@@ -44,15 +51,15 @@ export default function UserForm({ initialData, onSubmit }: Props) {
       setAddress(initialData.profile?.address || "");
       setDateOfBirth(initialData.profile?.dateOfBirth || "");
       setStatus(initialData.status || "active");
-      setPreview(initialData.avatarUrls?.map((img) => img.url) || []);
     }
   }, [initialData]);
 
   // 🧩 Upload file
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setAvatarFiles(files);
-    setPreview(files.map((f) => URL.createObjectURL(f)));
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setAvatarFile(file);
+    setPreview(URL.createObjectURL(file));
   };
 
   const validateForm = () => {
@@ -63,14 +70,21 @@ export default function UserForm({ initialData, onSubmit }: Props) {
     if (!email.trim()) newErrors.email = "Email không được để trống.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = "Email không hợp lệ.";
 
+    // Validate password chỉ khi tạo mới (không có initialData)
+    if (!initialData) {
+      if (!password.trim()) {
+        newErrors.password = "Mật khẩu không được để trống.";
+      } else if (password.length < 6) {
+        newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
+      }
+    }
+
     if (phone && !/^\d{9,11}$/.test(phone))
       newErrors.phone = "Số điện thoại chỉ được chứa 9–11 chữ số.";
 
     if (dateOfBirth) {
       const dob = new Date(dateOfBirth);
       if (dob > new Date()) newErrors.dateOfBirth = "Ngày sinh không được lớn hơn hôm nay.";
-    } else {
-      newErrors.dateOfBirth = "Vui lòng chọn ngày sinh.";
     }
 
     setErrors(newErrors);
@@ -94,7 +108,12 @@ export default function UserForm({ initialData, onSubmit }: Props) {
       status,
     };
 
-    onSubmit(data, avatarFiles);
+    // Chỉ thêm password khi tạo mới
+    if (!initialData && password.trim()) {
+      (data as any).password = password.trim();
+    }
+
+    onSubmit(data, avatarFile);
   };
 
   return (
@@ -141,6 +160,20 @@ export default function UserForm({ initialData, onSubmit }: Props) {
         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
       </div>
 
+      {/* Password - chỉ hiển thị khi tạo mới */}
+      {!initialData && (
+        <div>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Mật khẩu (tối thiểu 6 ký tự)"
+            className="border px-3 py-2 rounded w-full"
+          />
+          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+        </div>
+      )}
+
       {/* Phone */}
       <div>
         <input
@@ -175,14 +208,13 @@ export default function UserForm({ initialData, onSubmit }: Props) {
       <select
         value={status}
         onChange={(e) =>
-          setStatus(e.target.value as "active" | "inactive" | "banned" | "pending")
+          setStatus(e.target.value as "active" | "inactive" | "banned")
         }
         className="border px-3 py-2 rounded"
       >
         <option value="active">Hoạt động</option>
         <option value="inactive">Ngừng hoạt động</option>
         <option value="banned">Bị khóa</option>
-        <option value="pending">Chờ xác nhận</option>
       </select>
 
       {/* Avatar */}
@@ -193,16 +225,13 @@ export default function UserForm({ initialData, onSubmit }: Props) {
         className="border px-3 py-2 rounded"
       />
 
-      {preview.length > 0 && (
+      {preview && (
         <div className="grid grid-cols-3 gap-2 mt-2">
-          {preview.map((url, i) => (
-            <img
-              key={i}
-              src={url}
-              alt="preview"
-              className="w-full h-24 object-cover rounded-lg border"
-            />
-          ))}
+          <img
+            src={preview}
+            alt="preview"
+            className="w-full h-24 object-cover rounded-lg border"
+          />
         </div>
       )}
 

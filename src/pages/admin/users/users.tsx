@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { fetchUsers, deleteUser } from "../../../redux/userSlice";
 import type { User } from "../../../types/user";
 import { useNavigate } from "react-router-dom";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 export default function UserList() {
   const dispatch = useAppDispatch();
@@ -30,7 +31,7 @@ export default function UserList() {
   }, [dispatch, page, search, sortField, sortOrder, activeRole ]);
 
   const handleDelete = (id: string) => {
-    if (confirm("Bạn có chắc muốn xóa khóa học này?")) {
+    if (confirm("Bạn có chắc muốn xóa người dùng này?")) {
       dispatch(deleteUser(id));
     }
   };
@@ -52,8 +53,15 @@ export default function UserList() {
 
   const renderSortIcon = (field: string) => {
     if (sortField !== field) return null;
-    return sortOrder === "asc" ? "↑" : "↓";
+    return sortOrder === "asc" ? <FaArrowUp /> : <FaArrowDown />;
   };
+
+  const pages: number[] = [];
+  if (pagination) {
+    for (let i = 1; i <= pagination.totalPages; i++) {
+      pages.push(i);
+    }
+  }
 
   return (
     <div className="p-6">
@@ -149,7 +157,7 @@ export default function UserList() {
               >
                 Email {renderSortIcon("email")}
               </th>
-              <th className="border text-center px-4 py-3">STĐ</th>
+              <th className="border text-center px-4 py-3">SĐT</th>
               <th
                 className="border text-center px-4 py-3 cursor-pointer"
                 onClick={() => handleSort("dateOfBirth")}
@@ -181,7 +189,9 @@ export default function UserList() {
                   <td className="border text-center px-4 py-2">
                     {(page - 1) * (pagination?.pageSize ?? 15) + index + 1}
                   </td>
-                  <td className="border px-4 py-2 font-medium">{user.name}</td>
+                  <td className="border px-4 py-2 font-mediummax-w-[250px] truncate">
+                    {user.name}
+                  </td>
                   <td className="border px-4 py-2">{user.email}</td>
                   <td className="border px-4 py-2">{user.profile?.phone || "—"}</td>
                   <td className="border px-4 py-2">{user.profile?.dateOfBirth || "—"}</td>
@@ -202,7 +212,7 @@ export default function UserList() {
                     </span>
                   </td>
                   <td className="border text-center px-4 py-2">
-                    {new Date(user.createdAt || "").toLocaleDateString("vi-VN")}
+                    {new Date(user.createdAt || "—").toLocaleDateString("vi-VN")}
                   </td>
                   <td className="border px-4 py-2 text-center flex gap-2 justify-center">
                     <button
@@ -240,21 +250,19 @@ export default function UserList() {
       </div>
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && (
+      {pages.length > 1 && (
         <div className="flex gap-2 mt-4">
-          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
-            (p) => (
-              <button
-                key={p}
-                onClick={() => setPage(p)}
-                className={`px-3 py-1 border rounded ${
-                  page === p ? "bg-blue-500 text-white" : ""
-                }`}
-              >
-                {p}
-              </button>
-            )
-          )}
+          {pages.map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={`px-3 py-1 border rounded ${
+                page === p ? "bg-blue-500 text-white" : ""
+              }`}
+            >
+              {p}
+            </button>
+          ))}
         </div>
       )}
     </div>

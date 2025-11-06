@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import type { Message, UserInfo, UserStatus } from "../../../../types/chat";
 
-const socketURL = import.meta.env.VITE_SOCKET_URL ||
-  "http://localhost:3000";
+const socketURL = import.meta.env.VITE_SOCKET_URL || "http://localhost:3000";
 
 type Handlers = {
   onReceiveMessage: (payload: {
@@ -46,7 +44,7 @@ export function useAdminChatSocket(h: Handlers) {
       console.log("🔌 Admin disconnecting...");
       s.disconnect();
     };
-  // intentionally run once
+    // intentionally run once
   }, []);
 
   return socket;

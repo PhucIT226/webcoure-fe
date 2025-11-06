@@ -27,7 +27,6 @@ export default function UserDetail() {
       axios
         .get(`/users/${id}`)
         .then((res) => {
-          console.log("🧩 Kết quả từ backend:", res.data);
           setUser(res.data.data);
         })
         .catch((err) => {
@@ -172,7 +171,7 @@ export default function UserDetail() {
         </div>
 
         {/* Thumbnail dạng carousel mini */}
-        {!user.avatarUrls?.length && user.avatarUrl && (
+        {user.avatarUrl && (
           <div className="mt-6">
             <p className="font-semibold mb-3 text-gray-800 text-lg">
               Ảnh đại diện:

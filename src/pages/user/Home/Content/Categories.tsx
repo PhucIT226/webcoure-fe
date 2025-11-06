@@ -80,9 +80,9 @@ const Categories = () => {
                 })
               }
             >
-              {course.thumbnailUrls?.[0] && (
+              {course.thumbnailUrl && (
                 <img
-                  src={course.thumbnailUrls[0].url}
+                  src={`http://localhost:3000${course.thumbnailUrl}`}
                   alt={course.title}
                   className="w-full h-40 object-cover rounded"
                 />

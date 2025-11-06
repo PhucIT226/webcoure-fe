@@ -5,15 +5,18 @@ import UserService from "../../../services/userService";
 export default function UserCreate() {
   const navigate = useNavigate();
 
-  const handleCreate = async (data: any, files?: File[]) => {
-    try {
-      await UserService.create(data, files);
-      alert("Thêm người dùng thành công!");
-      navigate("/admin/users");
-    } catch (error) {
-      console.error(error);
-      alert("Lỗi khi thêm người dùng");
-    }
+  // Accept single file (or null). Keep return type void to match prop.
+  const handleCreate = (data: any, file?: File | null) => {
+    (async () => {
+      try {
+        await UserService.create(data, file ?? undefined);
+        alert("Thêm người dùng thành công!");
+        navigate("/admin/users");
+      } catch (error) {
+        console.error(error);
+        alert("Lỗi khi thêm người dùng");
+      }
+    })();
   };
 
   return (

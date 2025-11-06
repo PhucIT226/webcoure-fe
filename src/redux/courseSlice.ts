@@ -103,9 +103,6 @@ const courseSlice = createSlice({
           state.loading = false;
           state.data = action.payload.data.map((course: TAny) => ({
             ...course,
-            thumbnailUrls: course.thumbnailUrl
-              ? [{ url: course.thumbnailUrl }]
-              : [],
           }));
           state.pagination = action.payload.pagination;
         }

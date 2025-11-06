@@ -185,17 +185,13 @@ export default function CourseDetail() {
         </div>
 
         {/* Thumbnail dạng carousel mini */}
-        {!course.thumbnailUrls?.length && course.thumbnailUrl && (
+        {course.thumbnailUrl && (
           <div className="mt-6">
             <p className="font-semibold mb-3 text-gray-800 text-lg">
               Ảnh khóa học:
             </p>
             <img
-              src={
-                course.thumbnailUrl.startsWith("http")
-                  ? course.thumbnailUrl
-                  : `http://localhost:3000${course.thumbnailUrl}`
-              }
+              src={`http://localhost:3000${course.thumbnailUrl}`}
               alt={course.title}
               className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm"
             />

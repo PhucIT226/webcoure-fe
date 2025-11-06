@@ -57,6 +57,13 @@ export default function CouponList() {
     return sortOrder === "asc" ? "↑" : "↓";
   };
 
+  const pages: number[] = [];
+  if (pagination) {
+    for (let i = 1; i <= pagination.totalPages; i++) {
+      pages.push(i);
+    }
+  }
+
   return (
     <div className="p-6">
       {/* Header + Search + Status Filter */}
@@ -199,19 +206,19 @@ export default function CouponList() {
       </div>
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && (
+      {pages.length > 1 && (
         <div className="flex gap-2 mt-4">
-          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
-            (p) => (
-              <button
-                key={p}
-                onClick={() => setPage(p)}
-                className={`px-3 py-1 border rounded ${page === p ? "bg-blue-500 text-white" : ""}`}
-              >
-                {p}
-              </button>
-            )
-          )}
+          {pages.map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={`px-3 py-1 border rounded ${
+                page === p ? "bg-blue-500 text-white" : ""
+              }`}
+            >
+              {p}
+            </button>
+          ))}
         </div>
       )}
     </div>

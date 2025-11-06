@@ -62,9 +62,7 @@ axiosClient.interceptors.response.use(
       !originalRequest.url.includes("/auth/refresh")
     ) {
       originalRequest._retry = true;
-      console.warn(
-        "⚠️ [401] Access token có thể hết hạn → thử refresh token..."
-      );
+      console.warn("⚠️ [401] Access token có thể hết hạn → thử refresh token...");
 
       try {
         const refreshRes = await axiosClient.post("/auth/refresh");

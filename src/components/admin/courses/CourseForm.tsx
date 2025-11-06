@@ -55,7 +55,6 @@ export default function CourseForm({ initialData, onSubmit }: Props) {
       setStatus(initialData.status || "draft");
       setCategoryId(initialData.categoryId ? String(initialData.categoryId) : "");
       setInstructorId(initialData.instructorId ? String(initialData.instructorId) : "");
-      setPreview(initialData.thumbnailUrls?.map((img) => img.url) || []);
     }
   }, [initialData]);
 

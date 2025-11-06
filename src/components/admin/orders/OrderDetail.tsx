@@ -175,14 +175,13 @@ export default function OrderDetail() {
                   key={i}
                   className="flex items-center gap-4 bg-base-100 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  {item.course?.thumbnailUrls &&
-                    item.course.thumbnailUrls.length > 0 && (
-                      <img
-                        src={`http://localhost:3000${item.course.thumbnailUrls[0].url}`}
-                        alt={item.course.title}
-                        className="w-24 h-20 object-cover rounded-lg border border-gray-200"
-                      />
-                    )}
+                  {item.course?.thumbnailUrl && (
+                    <img
+                      src={`http://localhost:3000${item.course.thumbnailUrl}`}
+                      alt={item.course.title}
+                      className="w-24 h-20 object-cover rounded-lg border border-gray-200"
+                    />
+                  )}
                   <div className="flex-1">
                     <p className="font-medium text-gray-800">
                       {item.course?.title}

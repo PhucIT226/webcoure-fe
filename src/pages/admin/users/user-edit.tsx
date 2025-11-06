@@ -22,15 +22,17 @@ export default function UserEdit() {
     fetchData();
   }, [id]);
 
-  const handleUpdate = async (data: Partial<User>, files?: File[]) => {
-    try {
-      await UserService.update(id!, data, files);
-      alert("Cập nhật người dùng thành công!");
-      navigate("/admin/users");
-    } catch (error) {
-      console.error(error);
-      alert("Lỗi khi cập nhật người dùng");
-    }
+  const handleUpdate = (data: Partial<User>, file?: File | null) => {
+    (async () => {
+      try {
+        await UserService.update(id!, data, file ?? undefined);
+        alert("Cập nhật người dùng thành công!");
+        navigate("/admin/users");
+      } catch (error) {
+        console.error(error);
+        alert("Lỗi khi cập nhật người dùng");
+      }
+    })();
   };
 
   if (!user) return <p className="p-6 text-gray-600">Đang tải dữ liệu...</p>;

@@ -1,4 +1,4 @@
-import { persistReducer } from "redux-persist";
+import { persistReducer } from "redux-persist"; 
 import { configureStore } from "@reduxjs/toolkit";
 import profileSlice from "./profileSlice";
 import courseSlice from "./courseSlice";

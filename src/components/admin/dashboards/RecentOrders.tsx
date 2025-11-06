@@ -1,9 +1,15 @@
 import { useAppSelector } from "../../../hooks";
 import { FaShoppingBag } from "react-icons/fa";
 import { FaCheck, FaClock, FaUndo, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const RecentOrders = () => {
+  const navigate = useNavigate();
   const { recentOrders, loading } = useAppSelector((state) => state.dashboard);
+
+  const handleNavigate = (id: string) => {
+    navigate(`orders/${id}`);
+  }
 
   return (
     <div className="bg-gradient-to-br from-white to-gray-50 p-5 rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300">
@@ -30,13 +36,13 @@ export const RecentOrders = () => {
           {recentOrders.map((order) => (
             <li
               key={order.id}
+              onClick = {() => handleNavigate(order.id)}
               className="py-3 flex items-center justify-between hover:bg-green-50/40 px-3 rounded-lg transition-all duration-200"
             >
               <div>
                 <p className="font-medium text-gray-800">
                   {order.user?.name || "Người dùng ẩn danh"}
                 </p>
-                <p className="text-xs text-gray-500">Mã đơn: #{order.id}</p>
               </div>
 
               <div className="text-right">
