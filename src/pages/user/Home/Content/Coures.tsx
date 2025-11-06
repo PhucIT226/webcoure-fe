@@ -4,7 +4,6 @@ import type { Course } from "../../../../types/course";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { fetchCourses } from "../../../../redux/courseSlice";
 import { useNavigate } from "react-router-dom";
-import { getFullImageUrl } from "../../../../utils/imageUrl";
 
 const Courses = () => {
   const navigate = useNavigate();
@@ -51,7 +50,7 @@ const Courses = () => {
               <div className="course-card mt-6 bg-white rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform">
                 <div className="course-card_image mb-4">
                   <img
-                    src={getFullImageUrl(course.thumbnailUrl)}
+                    src={`http://localhost:3000${course.thumbnailUrl}`}
                     alt={course.title}
                     className="w-full h-48 object-cover rounded-t-2xl"
                   />

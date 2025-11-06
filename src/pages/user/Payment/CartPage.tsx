@@ -1,9 +1,7 @@
 import { Button } from "../../../components/ui/button";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-
 import { useNavigate } from "react-router-dom";
 import { clearCart, removeFromCart } from "../../../redux/cartSlice";
-import { getFullImageUrl } from "../../../utils/imageUrl";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
@@ -50,7 +48,7 @@ const CartPage = () => {
               >
                 {/* Hình ảnh */}
                 <img
-                  src={getFullImageUrl(item.thumbnailUrl)}
+                  src={`http://localhost:3000${item.thumbnailUrl}`}
                   alt={item.title}
                   className="w-24 h-24 object-cover rounded-lg"
                 />

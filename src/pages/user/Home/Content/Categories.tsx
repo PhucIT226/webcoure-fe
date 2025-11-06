@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
 import type { TAny } from "../../../../types/common";
 import { useNavigate } from "react-router-dom";
-import { getFullImageUrl } from "../../../../utils/imageUrl";
 
 const Categories = () => {
   const dispatch = useAppDispatch();
@@ -82,7 +81,7 @@ const Categories = () => {
               }
             >
               <img
-                src={getFullImageUrl(course.thumbnailUrl)}
+                src={`http://localhost:3000${course.thumbnailUrl}`}
                 alt={course.title}
                 className="w-full h-40 object-cover rounded"
               />
