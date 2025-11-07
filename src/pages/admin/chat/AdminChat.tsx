@@ -163,7 +163,7 @@ export default function AdminChat() {
       text: input,
     });
 
-    socket?.emit?.("typing", { userId: "admin01", isTyping: false });
+  socket?.emit?.("typing", { userId: currentUserId, isTyping: false });
 
     setInput("");
   };
@@ -173,11 +173,11 @@ export default function AdminChat() {
     setInput(e.target.value);
     if (!currentUserId) return;
 
-    socket?.emit?.("typing", { userId: "admin01", isTyping: true });
+  socket?.emit?.("typing", { userId: currentUserId, isTyping: true });
 
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     typingTimeoutRef.current = setTimeout(() => {
-      socket?.emit?.("typing", { userId: "admin01", isTyping: false });
+    socket?.emit?.("typing", { userId: currentUserId, isTyping: false });
     }, 1000);
   };
 

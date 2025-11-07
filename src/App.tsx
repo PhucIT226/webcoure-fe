@@ -32,7 +32,6 @@ import CategoryCreate from "./pages/admin/categories/category-create";
 import CategoryEdit from "./pages/admin/categories/category-edit";
 import OrderList from "./pages/admin/orders/orders";
 import OrderDetail from "./components/admin/orders/OrderDetail";
-import OrderEdit from "./pages/admin/orders/order-edit";
 import ReviewList from "./pages/admin/reviews/reviews";
 import ReviewDetail from "./components/admin/reviews/ReviewDetail";
 import CouponList from "./pages/admin/coupons/coupons";
@@ -90,7 +89,6 @@ function App() {
           <Route path="orders">
             <Route index element={<OrderList />} />
             <Route path=":id" element={<OrderDetail />} />
-            <Route path=":id/edit" element={<OrderEdit />} />
           </Route>
 
           {/* Review routes */}

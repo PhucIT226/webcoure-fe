@@ -31,7 +31,6 @@ export function useAdminChatSocket(h: Handlers) {
     setSocket(s);
 
     s.on("connect", () => {
-      console.log("✅ Admin connected:", s.id);
       s.emit("join", { userId: "admin01", role: "admin" });
     });
 
@@ -41,10 +40,8 @@ export function useAdminChatSocket(h: Handlers) {
     s.on("userTyping", h.onUserTyping);
 
     return () => {
-      console.log("🔌 Admin disconnecting...");
       s.disconnect();
     };
-    // intentionally run once
   }, []);
 
   return socket;

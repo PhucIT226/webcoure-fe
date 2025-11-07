@@ -175,6 +175,12 @@ export default function ReviewList() {
                     >
                       Chi tiết
                     </button>
+                    <button
+                      onClick={() => handleDelete(review.id!)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                      >
+                      Xóa
+                    </button>
                     {review.status === "pending" && (
                       <button
                         onClick={() => handleApprove(review.id!)}
@@ -183,12 +189,6 @@ export default function ReviewList() {
                         Duyệt
                       </button>
                     )}
-                    <button
-                      onClick={() => handleDelete(review.id!)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                    >
-                      Xóa
-                    </button>
                   </td>
                 </tr>
               ))
