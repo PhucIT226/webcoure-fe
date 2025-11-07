@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { fetchCourses } from "../../../../redux/courseSlice";
@@ -16,13 +16,13 @@ const SearchCourses = () => {
   const courses = useAppSelector((state) => state.course.data);
   const loading = useAppSelector((state) => state.course.loading);
 
-  const [page] = useState(1);
+  // const [page] = useState(1);
 
   useEffect(() => {
     if (searchValue) {
-      dispatch(fetchCourses({ page, pageSize: 15, search: searchValue }));
+      dispatch(fetchCourses({ search: searchValue }));
     }
-  }, [dispatch, page, searchValue]);
+  }, [dispatch, searchValue]);
 
   return (
     <div className="container mx-auto px-4 py-6">

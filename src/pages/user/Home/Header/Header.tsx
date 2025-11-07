@@ -27,23 +27,19 @@ const Header = () => {
   const cartCount = cartItems.length;
 
   const [searchInput, setSearchInput] = useState("");
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
 
   const handleLogin = () => navigate("/login");
   const handleRegister = () => navigate("/register");
   const handleLogout = () => dispatch(signout());
 
   useEffect(() => {
-    dispatch(fetchCategories({ page, pageSize: 15, search }));
-  }, [dispatch, page, search]);
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = searchInput.trim();
     if (!trimmed) return;
-    setPage(1);
-    setSearch(trimmed);
     navigate(`/coursesfound?search=${trimmed}`);
   };
 
