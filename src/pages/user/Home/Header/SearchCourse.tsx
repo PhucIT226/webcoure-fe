@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { fetchCourses } from "../../../../redux/courseSlice";
 import type { Course } from "../../../../types/course";
 import { MdOutlineStar } from "react-icons/md";
+import { BASE_API_URL } from "../../../../constants";
 
 const SearchCourses = () => {
   const dispatch = useAppDispatch();
@@ -57,7 +58,7 @@ const SearchCourses = () => {
               }
             >
               <img
-                src={course.thumbnailUrl || "/fallback.png"}
+                src={`${BASE_API_URL}${course.thumbnailUrl}`}
                 alt={course.title}
                 className="w-full h-48 object-cover rounded-t-2xl"
               />
