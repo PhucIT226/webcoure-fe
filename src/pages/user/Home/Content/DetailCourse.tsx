@@ -157,7 +157,7 @@ const DetailCourse = () => {
             <iframe
               width="100%"
               height="400"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              src="https://www.youtube.com/embed/RE1lfCs6uaE"
               title="Giới thiệu khóa học"
               allowFullScreen
             ></iframe>
