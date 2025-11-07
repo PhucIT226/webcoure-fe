@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { fetchProfile, updateProfile } from "../../../../redux/profileSlice";
 import { useNavigate } from "react-router-dom";
-import { getThumbnailUrl } from "../../../../utils/getThumbnailUrl";
+import { BASE_API_URL } from "../../../../constants";
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState<"profile" | "courses">("profile");
@@ -225,7 +225,7 @@ const UserProfile = () => {
                     {/* Ảnh khoá học */}
                     <div className="relative">
                       <img
-                        src={getThumbnailUrl(course.course)}
+                        src={`${BASE_API_URL}${course.course.thumbnailUrl}`}
                         alt={course.course.title}
                         className="w-full h-44 object-cover"
                       />
